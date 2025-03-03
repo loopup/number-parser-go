@@ -1,14 +1,20 @@
 package numberparsergo
 
 import (
-	"os"
-	"log/slog"
+	_ "embed"
+	"log"
 	"slices"
 	"strings"
-	"time"
 
 	"github.com/gocarina/gocsv"
 )
+
+// Load the CSV and embed it into the binary so we do not have to worry about copying the
+// csv file at package/distribution time.
+// The embed directive loads the file into the binary and the next line makes it available
+// into the variable `PhoneNumberDataCsv`
+//go:embed prefix_data.csv
+var PhoneNumberDataCsv string
 
 var (
 	PhoneNumberData []PhoneNumberItem
@@ -25,25 +31,14 @@ type PhoneNumberItem struct {
 
 // Loads the file prefix_data.csv into memory to allow number parsing via FindNumberDataForE164
 func LoadNumberParserCache() {
-	ttx := time.Now()
-	inf, err := os.Open("prefix_data.csv")
-	if err != nil {
-		slog.With("func", "LoadNumberParserCache").With("ttx", time.Since(ttx)).Error("Unable to load the `prefix_data.csv`", "err", err)
-		return
-	}
-
-	defer inf.Close()
-
 	// Clear any existing data
 	PhoneNumberData = nil
 
-	err = gocsv.UnmarshalFile(inf, &PhoneNumberData)
+	err := gocsv.UnmarshalString(PhoneNumberDataCsv, &PhoneNumberData)
 	if err != nil {
-		slog.With("func", "LoadNumberParserCache").With("ttx", time.Since(ttx)).Error("Failed decoding the prefix_data.csv", "err", err)
+		log.Fatalf("Unable to load the csv embed")
 		return
 	}
-
-	slog.With("func", "LoadNumberParserCache").With("ttx", time.Since(ttx)).Info("Loaded PhoneNumberData items", "items", len(PhoneNumberData))
 }
 
 // Noramlizes the argument if it does not have a preceeding `+` then the result will have the `+` prefixed.
