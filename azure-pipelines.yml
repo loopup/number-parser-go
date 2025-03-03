@@ -18,9 +18,16 @@ steps:
     command: 'build'
     workingDirectory: '$(System.DefaultWorkingDirectory)'
 - task: Go@0
+  displayName: Tests
   inputs:
     command: 'test'
     arguments: '-v'
+    workingDirectory: '$(System.DefaultWorkingDirectory)'    
+- task: Go@0
+  displayName: Fuzz 
+  inputs:
+    command: 'test'
+    arguments: '-v -fuzz=Fuzz -fuzztime 2m'
     workingDirectory: '$(System.DefaultWorkingDirectory)'    
 - task: CopyFiles@2
   inputs:
