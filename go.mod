@@ -1,4 +1,4 @@
-module loopup.com/number-parser-go
+module github.com/loopup/number-parser-go
 
 go 1.24.0
 
