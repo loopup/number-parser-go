@@ -1,4 +1,4 @@
-package numberparsergo
+package numberparser
 
 import (
 	_ "embed"
@@ -30,7 +30,7 @@ type PhoneNumberItem struct {
 }
 
 // Loads the file prefix_data.csv into memory to allow number parsing via FindNumberDataForE164
-func LoadNumberParserCache() {
+func init() {
 	// Clear any existing data
 	PhoneNumberData = nil
 

@@ -1,16 +1,22 @@
-package numberparsergo
+package numberparser
 
 import (
 	"strings"
 	"testing"
 )
 
-func TestLoadNumberParserCache(t *testing.T) {
-	LoadNumberParserCache()
-	if got := len(PhoneNumberData); got == 0 {
-		t.Errorf("LoadNumberParserCache(); items %v", got)
+func TestPhoneNumberDataCsv_NotEmpty(t *testing.T){
+	if len(PhoneNumberDataCsv) == 0  {
+		t.Errorf("PhoneNumberDataCsv is empty!")
 	}
 }
+
+func TestPhoneNumberData_Parsed(t *testing.T){
+	if len(PhoneNumberData) == 0  {
+		t.Errorf("PhoneNumberData is empty!")
+	}
+}
+
 
 func TestNormalizeE164(t *testing.T) {
 	testcases := []struct {
