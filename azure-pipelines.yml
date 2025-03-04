@@ -36,16 +36,18 @@ steps:
       rc=${PIPESTATUS[0]} # Get result code of `go test`
       # Show files
       ls *.xml
-      
-      # Convert coverage file into XML
-      gocov convert coverage.txt > coverage.json
-      gocov-xml < coverage.json > coverage.xml
 
       # Check if `go test` had an error
       if [ $rc -ne 0 ]; then
         # Let script fail by writing to stderr
         >&2 echo "Tests failed"
       fi
+- task: Go@0
+  displayName: Tests
+  inputs:
+    command: 'test'
+    arguments: '-v -coverprofile=coverage.txt -covermode=count ./... | go-unit-report > report.xml'
+
 - task: Go@0
   displayName: Fuzz 
   inputs:
