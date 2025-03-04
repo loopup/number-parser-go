@@ -22,21 +22,28 @@ steps:
     command: 'build'
     workingDirectory: '$(System.DefaultWorkingDirectory)'
 - task: Bash@3
-  displayName: 'Install Go Test and Report Tools'
-  inputs:
-    targetType: inline
-    script: |
-      go get code.google.com/p/go.tools/cmd/cover
-      go get github.com/t-yuki/gocover-cobertura
-      go get -u github.com/jstemmer/go-junit-report
-
-- task: Bash@3
   displayName: Tests
   inputs:
     targetType: inline
     script: |
-      go test -v -coverprofile=coverage.txt -covermode count ./... 2>&1 | $(go env GOPATH)/bin/go-junit-report > report.xml
+      # Get tools for converting Go's test reports
+      go get -u github.com/jstemmer/go-junit-report 2>&1
+      go get -u github.com/axw/gocov/gocov 2>&1
+      go get -u github.com/AlekSi/gocov-xml 2>&1
 
+      # Run Go tests and turn output into JUnit test result format
+      go test . -v -coverprofile=coverage.txt -covermode count 2>&1 | $HOME/go/bin/go-junit-report > report.xml
+      rc=${PIPESTATUS[0]} # Get result code of `go test`
+
+      # Convert coverage file into XML
+      $HOME/go/bin/gocov convert coverage.txt > coverage.json
+      $HOME/go/bin/gocov-xml < coverage.json > coverage.xml
+
+      # Check if `go test` had an error
+      if [ $rc -ne 0 ]; then
+        # Let script fail by writing to stderr
+        >&2 echo "Tests failed"
+      fi
 - task: Go@0
   displayName: Fuzz 
   inputs:
@@ -46,7 +53,8 @@ steps:
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: JUnit
-    testResultsFiles: "./report.xml"   
+    testResultsFiles: "*report*.xml"   
+    searchFolder: "$(Build.SourcesDirectory)"
     failTaskOnFailedTests: true
     testRunTitle: "Go Tests"
 - task: PublishCodeCoverageResults@2
