@@ -21,18 +21,38 @@ steps:
   inputs:
     command: 'build'
     workingDirectory: '$(System.DefaultWorkingDirectory)'
-- task: Go@0
+- task: Bash@3
+  displayName: 'Install Go Test and Report Tools'
+  inputs:
+    targetType: inline
+    script: |
+      go get code.google.com/p/go.tools/cmd/cover
+      go get github.com/t-yuki/gocover-cobertura
+      go get -u github.com/jstemmer/go-junit-report
+
+- task: Bash@3
   displayName: Tests
   inputs:
-    command: 'test'
-    arguments: '-v'
-    workingDirectory: '$(System.DefaultWorkingDirectory)'    
+    targetType: inline
+    script: |
+      go test -v -coverprofile=coverage.txt -covermode count ./... 2>&1 | $(go env GOPATH)/bin/go-junit-report > report.xml
+
 - task: Go@0
   displayName: Fuzz 
   inputs:
     command: 'test'
     arguments: '-v -fuzz=Fuzz -fuzztime 2m'
-    workingDirectory: '$(System.DefaultWorkingDirectory)'    
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: JUnit
+    testResultsFiles: "./report.xml"   
+    failTaskOnFailedTests: true
+    testRunTitle: "Go Tests"
+- task: PublishCodeCoverageResults@2
+  inputs:
+   summaryFileLocation: "coverage.xml"
+   pathToSources: "$(System.DefaultWorkingDirectory)"
 - task: CopyFiles@2
   inputs:
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
