@@ -27,18 +27,23 @@ steps:
     targetType: inline
     script: |
       # Get tools for converting Go's test reports
-      go get -u github.com/jstemmer/go-junit-report 2>&1
-      go get -u github.com/axw/gocov/gocov 2>&1
-      go get -u github.com/AlekSi/gocov-xml 2>&1
+      go install github.com/jstemmer/go-junit-report 2>&1
+      go install github.com/axw/gocov/gocov 2>&1
+      go install github.com/AlekSi/gocov-xml 2>&1
 
       # Run Go tests and turn output into JUnit test result format
+      
+      echo "Run tests output to file"
+      go test . -v 2>&1 | go-junit-report > report.xml
+      echo "Again.."
       go test . -v -coverprofile=coverage.txt -covermode count 2>&1 | $HOME/go/bin/go-junit-report > report.xml
       rc=${PIPESTATUS[0]} # Get result code of `go test`
       # Show files
+      echo "Check if we have files.."
       ls -lFa *.xml
-
+      echo "See contents of file.."
       cat report.xml
-
+      echo "Did we get rc==0? rc=$rc"
       # Check if `go test` had an error
       if [ $rc -ne 0 ]; then
         # Let script fail by writing to stderr
@@ -48,7 +53,7 @@ steps:
   displayName: Tests
   inputs:
     command: 'test'
-    arguments: '-v -coverprofile=coverage.txt -covermode=count ./... | go-unit-report > report.xml'
+    arguments: '-v -coverprofile=coverage.txt -covermode=count ./...'
 
 - task: Go@0
   displayName: Fuzz 
