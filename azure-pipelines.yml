@@ -28,13 +28,19 @@ steps:
     script: |
       # Get tools for converting Go's test reports
       go install github.com/jstemmer/go-junit-report/v2@latest
-      go get -u github.com/jstemmer/go-junit-report 2>&1
-      go get -u github.com/axw/gocov/gocov 2>&1
-      go get -u github.com/AlekSi/gocov-xml 2>&1
+      go get -u github.com/jstemmer/go-junit-report
+      go get -u github.com/axw/gocov/gocov
+      go get -u github.com/AlekSi/gocov-xml
       
       ls -lFa '$(System.DefaultWorkingDirectory)'
+      ls -lFa '$(Agent.SourcesDirectory)'
       echo "go stuf..."
       ls -lFa '$(GOROOT)/'
+      ls -lFa '$(GOROOT)/bin'
+      ls -lFa '$(GOROOT)/lib'
+      ls -lFa '$(GOROOT)/misc'
+      ls -lFa '$(GOROOT)/src'
+      
       ls -lFa '$(GOROOT)/pkg/tool/linux_amd64/'
       # Run Go tests and turn output into JUnit test result format
       
