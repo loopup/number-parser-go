@@ -33,24 +33,20 @@ steps:
       go get -u github.com/AlekSi/gocov-xml
       go env GOMODCACHE
       go env GOPATH
-      ls -lFa '$(System.DefaultWorkingDirectory)'
-      ls -lFa '$(Agent.SourcesDirectory)'
+      
       echo "go stuf..."
       ls -lFa '$(GOROOT)/'
-      ls -lFa /home/vsts/go/mod
-      ls -lFa '$GOPATH'
-      ls -lFa '$(GOROOT)/misc'
-      ls -lFa '$(GOROOT)/src'
+      echo "go stuf..moar.."
+      ls -lFa /home/vsts/go/pkg/mod
+      ls -lFa '$(go env GOPATH)'
       
-      ls -lFa '$(GOROOT)/pkg/tool/linux_amd64/'
       # Run Go tests and turn output into JUnit test result format
       
       echo "Run tests output to file"
       go test . -v 2>&1 | go-junit-report > report.xml
       echo "Again.."
-      go test . -v -coverprofile=coverage.xml -covermode count 2> report.tmp
-      go-junit-report report.tmp > report.xml
-      #rc=${PIPESTATUS[0]} # Get result code of `go test`
+      go test . -v -coverprofile=coverage.xml -covermode count 2>&1 | /home/vsts/go/pkg/mod/go-junit-report > report.xml
+      rc=${PIPESTATUS[0]} # Get result code of `go test`
       # Show files
       echo "Check if we have files.."
       ls -lFa *.xml
