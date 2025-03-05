@@ -27,27 +27,18 @@ steps:
     targetType: inline
     script: |
       # Get tools for converting Go's test reports
+      # This will download, build binaries and place them in /home/vsts/go/bin folder
       go install github.com/jstemmer/go-junit-report@latest
-      #go get -u github.com/jstemmer/go-junit-report
       go install github.com/axw/gocov/gocov@latest
       go install github.com/AlekSi/gocov-xml@latest
-      go env GOMODCACHE
-      go env GOPATH
       
-      echo "go stuf..."
-      ls -lFa '$(GOROOT)/'
-      tree -L 3 /home/vsts/go/
-
       # Run Go tests and turn output into JUnit test result format
       echo "Run tests output to file"
-      go test . -v -coverprofile=coverage.xml -covermode count 2>&1 | /home/vsts/go/bin/go-junit-report > report.xml
+      go test . -v -coverprofile=coverage.txt -covermode count 2>&1 | /home/vsts/go/bin/go-junit-report > report.xml
       rc=${PIPESTATUS[0]} # Get result code of `go test`
-      # Show files
-      echo "Check if we have files.."
-      ls -lFa *.xml
-      echo "See contents of file.."
-      cat report.xml
-      cat coverage.xml
+      /home/vsts/go/bin/gocov convert coverage.txt > coverage.json
+      /home/vsts/go/bin/gocov-xml < coverage.json > coverage.xml
+  
       echo "Did we get rc==0? rc=$rc"
       # Check if `go test` had an error
       if [ $rc -ne 0 ]; then
@@ -68,10 +59,12 @@ steps:
     searchFolder: "$(Build.SourcesDirectory)"
     failTaskOnFailedTests: true
     testRunTitle: "Go Tests"
-- task: PublishCodeCoverageResults@2
+- task: PublishCodeCoverageResults@1
   inputs:
-   summaryFileLocation: "coverage.xml"
-   pathToSources: "$(System.DefaultWorkingDirectory)"
+    codeCoverageTool: Cobertura 
+    pathToSources: '$(System.DefaultWorkingDirectory)'
+    summaryFileLocation: $(System.DefaultWorkingDirectory)/**/coverage.xml
+    failIfCoverageEmpty: true
 - task: CopyFiles@2
   inputs:
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
