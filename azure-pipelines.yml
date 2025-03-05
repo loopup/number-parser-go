@@ -36,6 +36,7 @@ steps:
       echo "Run tests output to file"
       go test . -v -coverprofile=coverage.txt -covermode count 2>&1 | /home/vsts/go/bin/go-junit-report > report.xml
       rc=${PIPESTATUS[0]} # Get result code of `go test`
+      # Transform the coverage.txt into the format used by Azure pipeline
       /home/vsts/go/bin/gocov convert coverage.txt > coverage.json
       /home/vsts/go/bin/gocov-xml < coverage.json > coverage.xml
   
@@ -59,9 +60,8 @@ steps:
     searchFolder: "$(Build.SourcesDirectory)"
     failTaskOnFailedTests: true
     testRunTitle: "Go Tests"
-- task: PublishCodeCoverageResults@1
+- task: PublishCodeCoverageResults@2
   inputs:
-    codeCoverageTool: Cobertura 
     pathToSources: '$(System.DefaultWorkingDirectory)'
     summaryFileLocation: $(System.DefaultWorkingDirectory)/**/coverage.xml
     failIfCoverageEmpty: true
