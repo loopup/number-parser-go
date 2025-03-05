@@ -32,8 +32,8 @@ steps:
       go get -u github.com/axw/gocov/gocov 2>&1
       go get -u github.com/AlekSi/gocov-xml 2>&1
 
-      ls -lFa '$(GOROOT)/bin'
-      ls -lFa '$(GOROOT)/pkg'
+      ls -lFa '$(GOROOT)/'
+      ls -lFa '$(GOROOT)/pkg/tool/'
       # Run Go tests and turn output into JUnit test result format
       
       echo "Run tests output to file"
@@ -47,6 +47,7 @@ steps:
       ls -lFa *.xml
       echo "See contents of file.."
       cat report.xml
+      cat coverage.xml
       echo "Did we get rc==0? rc=$rc"
       # Check if `go test` had an error
       if [ $rc -ne 0 ]; then
