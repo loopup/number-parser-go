@@ -37,8 +37,8 @@ steps:
       ls -lFa '$(Agent.SourcesDirectory)'
       echo "go stuf..."
       ls -lFa '$(GOROOT)/'
-      ls -lFa '$(GOROOT)/bin'
-      ls -lFa '$(GOROOT)/lib'
+      ls -lFa '$(GOMODCACHE)'
+      ls -lFa '$GOPATH'
       ls -lFa '$(GOROOT)/misc'
       ls -lFa '$(GOROOT)/src'
       
