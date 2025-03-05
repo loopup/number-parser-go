@@ -13,13 +13,10 @@ steps:
   inputs:
     version: '1.23.3'
 - task: Go@0
+  displayName: 'Resolve dependencies'
   inputs:
     command: 'get'
     arguments: '-d'
-    workingDirectory: '$(System.DefaultWorkingDirectory)'
-- task: Go@0
-  inputs:
-    command: 'build'
     workingDirectory: '$(System.DefaultWorkingDirectory)'
 - task: Bash@3
   displayName: Tests
