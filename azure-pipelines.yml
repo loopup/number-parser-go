@@ -13,13 +13,10 @@ steps:
   inputs:
     version: '1.23.3'
 - task: Go@0
+  displayName: 'Resolve dependencies'
   inputs:
     command: 'get'
     arguments: '-d'
-    workingDirectory: '$(System.DefaultWorkingDirectory)'
-- task: Go@0
-  inputs:
-    command: 'build'
     workingDirectory: '$(System.DefaultWorkingDirectory)'
 - task: Bash@3
   displayName: Tests
@@ -27,23 +24,26 @@ steps:
     targetType: inline
     script: |
       # Get tools for converting Go's test reports
-      go get -u github.com/jstemmer/go-junit-report 2>&1
-      go get -u github.com/axw/gocov/gocov 2>&1
-      go get -u github.com/AlekSi/gocov-xml 2>&1
-
+      # This will download, build binaries and place them in /home/vsts/go/bin folder
+      go install github.com/jstemmer/go-junit-report@latest
+      go install github.com/axw/gocov/gocov@latest
+      go install github.com/AlekSi/gocov-xml@latest
+      
       # Run Go tests and turn output into JUnit test result format
-      go test . -v -coverprofile=coverage.txt -covermode count 2>&1 | $HOME/go/bin/go-junit-report > report.xml
+      echo "Run tests output to file"
+      go test . -v -coverprofile=coverage.txt -covermode count 2>&1 | /home/vsts/go/bin/go-junit-report > report.xml
       rc=${PIPESTATUS[0]} # Get result code of `go test`
-
-      # Convert coverage file into XML
-      $HOME/go/bin/gocov convert coverage.txt > coverage.json
-      $HOME/go/bin/gocov-xml < coverage.json > coverage.xml
-
+      # Transform the coverage.txt into the format used by Azure pipeline
+      /home/vsts/go/bin/gocov convert coverage.txt > coverage.json
+      /home/vsts/go/bin/gocov-xml < coverage.json > coverage.xml
+  
+      echo "Did we get rc==0? rc=$rc"
       # Check if `go test` had an error
       if [ $rc -ne 0 ]; then
         # Let script fail by writing to stderr
         >&2 echo "Tests failed"
       fi
+
 - task: Go@0
   displayName: Fuzz 
   inputs:
@@ -59,8 +59,9 @@ steps:
     testRunTitle: "Go Tests"
 - task: PublishCodeCoverageResults@2
   inputs:
-   summaryFileLocation: "coverage.xml"
-   pathToSources: "$(System.DefaultWorkingDirectory)"
+    pathToSources: '$(System.DefaultWorkingDirectory)'
+    summaryFileLocation: $(System.DefaultWorkingDirectory)/**/coverage.xml
+    failIfCoverageEmpty: true
 - task: CopyFiles@2
   inputs:
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
