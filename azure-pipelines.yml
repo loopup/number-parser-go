@@ -31,9 +31,11 @@ steps:
       go get -u github.com/jstemmer/go-junit-report 2>&1
       go get -u github.com/axw/gocov/gocov 2>&1
       go get -u github.com/AlekSi/gocov-xml 2>&1
-
+      
+      ls -lFa '$(System.DefaultWorkingDirectory)'
+      echo "go stuf..."
       ls -lFa '$(GOROOT)/'
-      ls -lFa '$(GOROOT)/pkg/tool/'
+      ls -lFa '$(GOROOT)/pkg/tool/linux_amd64/'
       # Run Go tests and turn output into JUnit test result format
       
       echo "Run tests output to file"
