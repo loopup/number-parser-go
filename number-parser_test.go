@@ -35,6 +35,13 @@ func TestPhoneNumberData_UKMobile(t *testing.T) {
 }
 
 func TestPhoneNumberData_UKMobile_old(t *testing.T) {
+	res := FindNumberDataForE164v0("+447762000000")
+	if res != nil && !res.IsMobile {
+		t.Errorf("PhoneNumberData must be mobile! %v", res)
+	}
+}
+
+func TestPhoneNumberData_UKMobile_old_2(t *testing.T) {
 	res := FindNumberDataForE164v0("+447762987654")
 	if res != nil && !res.IsMobile {
 		t.Errorf("PhoneNumberData must be mobile! %v", res)
