@@ -45,10 +45,16 @@ steps:
       fi
 
 - task: Go@0
-  displayName: Fuzz 
+  displayName: Fuzz FuzzNormalizeE164
   inputs:
     command: 'test'
-    arguments: '-v -fuzz=Fuzz -fuzztime 2m'
+    arguments: '-v -fuzz=FuzzNormalizeE164 -fuzztime 2m'
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+- task: Go@0
+  displayName: Fuzz FuzzSanitizeNumber
+  inputs:
+    command: 'test'
+    arguments: '-v -fuzz=FuzzSanitizeNumber -fuzztime 2m'
     workingDirectory: '$(System.DefaultWorkingDirectory)'
 - task: PublishTestResults@2
   inputs:
