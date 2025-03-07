@@ -152,9 +152,62 @@ func TestFindNumberDataForE164(t *testing.T) {
 		{"+14156292008", "US"}}
 
 	for _, tc := range testcases {
-		res := FindNumberDataForE164(tc.input)
-		if res != nil && res.RegionCode != tc.want {
-			t.Errorf("FindNumberDataForE164: %s in: %v   want: %v", tc.input, res.IsSatellite, tc.want)
+		testname := fmt.Sprintf("%s-%s", tc.input, tc.want)
+		t.Run(testname, func(t *testing.T) {
+			res := FindNumberDataForE164(tc.input)
+			if res != nil && res.RegionCode != tc.want {
+				t.Errorf("FindNumberDataForE164: %s in: %v   want: %v", tc.input, res.IsSatellite, tc.want)
+			}
+		})
+	}
+}
+
+func BenchmarkFindNumberDataForE164(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+
+		testcases := []struct {
+			input string
+			want  string
+		}{
+			{"+12125554448", "US"},
+			{"+14158746923", "US"},
+			{"+12125552270", "US"},
+			{"+16508982178", "US"},
+			{"+1510866949", "US"},
+			{"+19253004504", "US"},
+			{"+14085552270", "US"},
+			{"+14156292008", "US"}}
+
+		for _, tc := range testcases {
+			res := FindNumberDataForE164(tc.input)
+			if res != nil && res.RegionCode != tc.want {
+				b.Errorf("FindNumberDataForE164: %s in: %v   want: %v", tc.input, res.RegionCode, tc.want)
+			}
+		}
+	}
+}
+
+func BenchmarkFindNumberDataForE164v0(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+
+		testcases := []struct {
+			input string
+			want  string
+		}{
+			{"+12125554448", "US"},
+			{"+14158746923", "US"},
+			{"+12125552270", "US"},
+			{"+16508982178", "US"},
+			{"+1510866949", "US"},
+			{"+19253004504", "US"},
+			{"+14085552270", "US"},
+			{"+14156292008", "US"}}
+
+		for _, tc := range testcases {
+			res := FindNumberDataForE164v0(tc.input)
+			if res != nil && res.RegionCode != tc.want {
+				b.Errorf("FindNumberDataForE164: %s in: %v   want: %v", tc.input, res.RegionCode, tc.want)
+			}
 		}
 	}
 }
