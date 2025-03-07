@@ -40,13 +40,8 @@ func init() {
 	var prefixKeys = []string{"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"}
 
 	// Clear any existing data
-
 	PhoneNumberData = make([]PhoneNumberItem, 128000)
 	PhoneNumberDataMap = make(map[string][]PhoneNumberItem, 9)
-
-	for _, key := range prefixKeys {
-		PhoneNumberDataMap[key] = make([]PhoneNumberItem, 20000)
-	}
 
 	ttx := time.Now()
 	gocsv.UnmarshalStringToCallback(PhoneNumberDataCsv, func(item PhoneNumberItem) {
@@ -115,8 +110,6 @@ func SanitizeNumber(phone string) string {
 // Given a e164 argument, check if we have a match against our PhoneNumberData and return the PhoneNumberItem record.
 // This function will normalize the argument to remove preceeding `+` or `0`
 func FindNumberDataForE164v0(e164 string) *PhoneNumberItem {
-	ttx := time.Now()
-
 	e164 = SanitizeNumber(e164)
 
 	i := slices.IndexFunc(PhoneNumberData, func(pnd PhoneNumberItem) bool {
@@ -132,11 +125,8 @@ func FindNumberDataForE164v0(e164 string) *PhoneNumberItem {
 	// Start by matching the number exactly.
 
 	if i != -1 {
-		log.Printf("FindNumberDataForE164 - Found prefix @%v %v in e164:%s in ttx:%v", i, PhoneNumberData[i], e164, time.Since(ttx))
 		return &PhoneNumberData[i]
 	}
-
-	log.Printf("FindNumberDataForE164 - Nothing Found prefix e164:%s in ttx:%v", e164, time.Since(ttx))
 
 	return nil
 }
@@ -146,8 +136,6 @@ func FindNumberDataForE164v0(e164 string) *PhoneNumberItem {
 // This is the improved search version using buckets to speed up lookup of number information.
 // The previous version
 func FindNumberDataForE164(e164 string) *PhoneNumberItem {
-	ttx := time.Now()
-
 	if e164 = SanitizeNumber(e164); len(e164) > 1 {
 		firstPrefixCharacter := string([]rune(e164)[0])
 
@@ -166,13 +154,9 @@ func FindNumberDataForE164(e164 string) *PhoneNumberItem {
 		// Start by matching the number exactly.
 
 		if i != -1 {
-			log.Printf("FindNumberDataForE164v2 - Found prefix @%d/%d -> %v in e164:%s in ttx:%v",
-				i, len(PhoneNumberDataMap[firstPrefixCharacter]), PhoneNumberDataMap[firstPrefixCharacter][i],
-				e164, time.Since(ttx))
 			return &PhoneNumberDataMap[firstPrefixCharacter][i]
 		}
 	}
-	log.Printf("FindNumberDataForE164v2 - Nothing Found prefix e164:%s in ttx:%v", e164, time.Since(ttx))
 
 	return nil
 }
