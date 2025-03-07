@@ -2,6 +2,7 @@ trigger:
   branches:
     include:
       - master
+      - main
   paths:
     exclude:
       - README.md
@@ -9,6 +10,19 @@ pool:
    vmImage: 'ubuntu-latest'
 
 steps: 
+- task: gitversion/setup@3
+  displayName: 'Install GitVersion..'
+  inputs:
+    versionSpec: '6.0'
+    preferLatestVersion: true
+
+- task: gitversion/execute@3
+  displayName: 'Determine Version..'
+  name: version_step
+  inputs:
+    useConfigFile: true
+    configFilePath: 'GitVersion.yml'
+
 - task: GoTool@0
   inputs:
     version: '1.23.3'
@@ -74,5 +88,22 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
      artifactName: drop
-
-     
+- task: GitHubRelease@1
+  displayName: 'Release to GitHub'
+  inputs:
+    gitHubConnection: 'loopup-sqs'
+    repositoryName: '$(Build.Repository.Name)'
+    action: 'create'
+    target: '$(Build.SourceVersion)'
+    tagSource: 'userSpecifiedTag'
+    tag: 'v$(GitVersion.MajorMinorPatch)'
+    title: 'v$(GitVersion.MajorMinorPatch)'
+    releaseNotesSource: 'inline'
+    releaseNotesInline: 'Documentation https://github.com/$(Build.Repository.Name)'
+    isPreRelease: true
+    changeLogCompareToRelease: 'lastFullRelease'
+    changeLogType: 'commitBased'
+    addChangeLog: false
+    assetUploadMode: 'replace'
+  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master')), startsWith(variables['Agent.OS'], 'Linux'))
+  
