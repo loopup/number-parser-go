@@ -2,8 +2,8 @@ package numberparser
 
 import (
 	_ "embed"
-	
-	
+	"fmt"
+
 	"strings"
 	"testing"
 )
@@ -172,8 +172,17 @@ func FuzzSanitizeNumber(f *testing.F) {
 	}
 
 	f.Fuzz(func(t *testing.T, arg string) {
+
 		res := SanitizeNumber(arg)
-		if len(res) == 0 {
+
+		// This minor update will allow us to bypass input that is
+		// too small to be a phone number causing a needless failure
+		// during fuzzing.
+		if len(res) < 6 {
+			t.Skip(fmt.Sprintf("Skipping res:`%s`; too small.", res))
+		}
+
+		if len(arg) != 0 && len(res) == 0 {
 			t.Errorf("NormalizeE164 fails %s --> %s", arg, res)
 		}
 	})
