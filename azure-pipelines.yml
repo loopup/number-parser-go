@@ -96,7 +96,6 @@ steps:
     releaseNotesInline: 'Documentation https://github.com/$(Build.Repository.Name)'
     isPreRelease: true
     changeLogCompareToRelease: 'lastFullRelease'
-    assets: '$(Build.ArtifactStagingDirectory)/*.zip'
     changeLogType: 'commitBased'
     addChangeLog: false
     assetUploadMode: 'replace'
