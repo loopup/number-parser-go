@@ -148,30 +148,30 @@ func FindNumberDataForE164v0(e164 string) *PhoneNumberItem {
 func FindNumberDataForE164(e164 string) *PhoneNumberItem {
 	ttx := time.Now()
 
-	e164 = SanitizeNumber(e164)
-	firstPrefixCharacter := string([]rune(e164)[0])
+	if e164 = SanitizeNumber(e164); len(e164) > 1 {
+		firstPrefixCharacter := string([]rune(e164)[0])
 
-	//log.Printf("FindNumberDataForE164v2 - e164:%v  `%v` in map len:%d of total:%d", e164, firstPrefixCharacter, len(PhoneNumberDataMap[firstPrefixCharacter]), len(PhoneNumberDataMap))
+		//log.Printf("FindNumberDataForE164v2 - e164:%v  `%v` in map len:%d of total:%d", e164, firstPrefixCharacter, len(PhoneNumberDataMap[firstPrefixCharacter]), len(PhoneNumberDataMap))
 
-	i := slices.IndexFunc(PhoneNumberDataMap[firstPrefixCharacter], func(pnd PhoneNumberItem) bool {
-		// For instance s -> `1` and our target is args.DestinationDdi
-		// We want to check that we have s as a prefix of args.DestinationDdi
-		//log.Printf("FindNumberDataForE164v2 - Examine prefix %s in e164:%s", pnd.NumberPrefix, e164)
-		return len(pnd.NumberPrefix) > 0 && strings.HasPrefix(e164, pnd.NumberPrefix)
-	})
+		i := slices.IndexFunc(PhoneNumberDataMap[firstPrefixCharacter], func(pnd PhoneNumberItem) bool {
+			// For instance s -> `1` and our target is args.DestinationDdi
+			// We want to check that we have s as a prefix of args.DestinationDdi
+			//log.Printf("FindNumberDataForE164v2 - Examine prefix %s in e164:%s", pnd.NumberPrefix, e164)
+			return len(pnd.NumberPrefix) > 0 && strings.HasPrefix(e164, pnd.NumberPrefix)
+		})
 
-	// The goal is to find the largest matching substring in the PhoneNumberData with the e164 argument
-	// So for instance we have 5492314403 an entry that corresponds to Armenia mobile. Quite a large number
-	// to perform a left-to-right match.
-	// Start by matching the number exactly.
+		// The goal is to find the largest matching substring in the PhoneNumberData with the e164 argument
+		// So for instance we have 5492314403 an entry that corresponds to Armenia mobile. Quite a large number
+		// to perform a left-to-right match.
+		// Start by matching the number exactly.
 
-	if i != -1 {
-		log.Printf("FindNumberDataForE164v2 - Found prefix @%d/%d -> %v in e164:%s in ttx:%v",
-			i, len(PhoneNumberDataMap[firstPrefixCharacter]), PhoneNumberDataMap[firstPrefixCharacter][i],
-			e164, time.Since(ttx))
-		return &PhoneNumberDataMap[firstPrefixCharacter][i]
+		if i != -1 {
+			log.Printf("FindNumberDataForE164v2 - Found prefix @%d/%d -> %v in e164:%s in ttx:%v",
+				i, len(PhoneNumberDataMap[firstPrefixCharacter]), PhoneNumberDataMap[firstPrefixCharacter][i],
+				e164, time.Since(ttx))
+			return &PhoneNumberDataMap[firstPrefixCharacter][i]
+		}
 	}
-
 	log.Printf("FindNumberDataForE164v2 - Nothing Found prefix e164:%s in ttx:%v", e164, time.Since(ttx))
 
 	return nil

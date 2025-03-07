@@ -70,6 +70,12 @@ steps:
     command: 'test'
     arguments: '-v -fuzz=FuzzSanitizeNumber -fuzztime 2m'
     workingDirectory: '$(System.DefaultWorkingDirectory)'
+- task: Go@0
+  displayName: Fuzz FuzzFindNumberDataForE164
+  inputs:
+    command: 'test'
+    arguments: '-v -fuzz=FuzzFindNumberDataForE164 -fuzztime 2m'
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: JUnit

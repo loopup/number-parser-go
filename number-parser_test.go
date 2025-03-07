@@ -3,6 +3,7 @@ package numberparser
 import (
 	_ "embed"
 	"fmt"
+	"slices"
 
 	"strings"
 	"testing"
@@ -132,6 +133,28 @@ func FuzzNormalizeE164(f *testing.F) {
 		res := NormalizeE164(arg)
 		if !strings.HasPrefix(res, "+") {
 			t.Errorf("NormalizeE164 fails %s --> %s", arg, res)
+		}
+	})
+}
+
+func FuzzFindNumberDataForE164(f *testing.F) {
+	testcases := []string{"+12125554448", "+14158746923", "+12125552270", "+16508982178", "+1510866949", "+19253004504", "+14085552270", "+14156292008"}
+
+	for _, tc := range testcases {
+		f.Add(tc)
+	}
+
+	f.Fuzz(func(t *testing.T, arg string) {
+		arg = SanitizeNumber(arg)
+
+		// Handles cases where the number is left as empty!
+		if len(arg) < 9 {
+			t.Skip(fmt.Sprintf("Skipping arg:`%s`; too small.", arg))
+		}
+
+		res := FindNumberDataForE164(arg)
+		if res == nil && slices.Contains(testcases, arg) {
+			t.Errorf("NormalizeE164 fails %s", arg)
 		}
 	})
 }
