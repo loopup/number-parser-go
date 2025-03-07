@@ -93,7 +93,7 @@ steps:
     tag: 'v$(GitVersion.MajorMinorPatch)'
     title: 'v$(GitVersion.MajorMinorPatch)'
     releaseNotesSource: 'inline'
-    releaseNotesInline: 'Documentation https://github.com/$(Build.Repository.Name)'
+    releaseNotesInline: 'Documentation https://github.com/$(Build.Repository.Name)<br/>Install: `go get -u github.com/loopup/number-parser-go`'
     isPreRelease: true
     changeLogCompareToRelease: 'lastFullRelease'
     changeLogType: 'commitBased'
