@@ -15,37 +15,10 @@ func TestPhoneNumberDataCsv_NotEmpty(t *testing.T) {
 	}
 }
 
-func TestPhoneNumberData_Parsed(t *testing.T) {
-	if len(PhoneNumberData) == 0 {
-		t.Errorf("PhoneNumberData is empty!")
-	}
-}
-
 func TestPhoneNumberData_Invalid(t *testing.T) {
 	res := FindNumberDataForE164("+21012345")
 	if res != nil {
 		t.Errorf("PhoneNumberData must be empty for invalid number!")
-	}
-}
-
-func TestPhoneNumberData_UKMobile(t *testing.T) {
-	res := FindNumberDataForE164("+447762000000")
-	if res != nil && !res.IsMobile {
-		t.Errorf("PhoneNumberData must be mobile! %v", res)
-	}
-}
-
-func TestPhoneNumberData_UKMobile_old(t *testing.T) {
-	res := FindNumberDataForE164v0("+447762000000")
-	if res != nil && !res.IsMobile {
-		t.Errorf("PhoneNumberData must be mobile! %v", res)
-	}
-}
-
-func TestPhoneNumberData_UKMobile_old_2(t *testing.T) {
-	res := FindNumberDataForE164v0("+447762987654")
-	if res != nil && !res.IsMobile {
-		t.Errorf("PhoneNumberData must be mobile! %v", res)
 	}
 }
 
@@ -61,7 +34,7 @@ func TestPhoneNumberData_Satellite(t *testing.T) {
 
 	for _, tc := range testcases {
 		res := FindNumberDataForE164(tc.input)
-		if res.IsSatellite != tc.want {
+		if res == nil || res.IsSatellite != tc.want {
 			t.Errorf("FindNumberDataForE164: %s in: %v   want: %v", tc.input, res.IsSatellite, tc.want)
 		}
 	}
@@ -72,15 +45,18 @@ func TestPhoneNumberData_Mobile(t *testing.T) {
 		input string
 		want  bool
 	}{
-		{"+447762000000", true},
+		{"+447762000000", true}, {"+447762987654", true},
 		{"+5492362336", true},
 		{"+14159991111", false},
+		{"+52 55 1234 5678", true},
+		{"+52 81 9876 5432", false},
+		{"+52 33 1122 3344", true},
 		{"+443111111", false},
 	}
 
 	for _, tc := range testcases {
 		res := FindNumberDataForE164(tc.input)
-		if res.IsMobile != tc.want {
+		if res == nil || (res != nil && res.IsMobile != tc.want) {
 			t.Errorf("FindNumberDataForE164: %s in: %v   want: %v", tc.input, res.IsMobile, tc.want)
 		}
 	}
@@ -95,11 +71,16 @@ func TestPhoneNumberData_Geographic(t *testing.T) {
 		{"+4420000", true},
 		{"+1415", true},
 		{"+13102223333", true},
+		{"+86 10 12345678", true},
+		{"+86 21 98765432", true},
+		{"+86 24 11223344", true},
+		{"+86 20 55667788", true},
+		{"+86 28 99887766", true},
 	}
 
 	for _, tc := range testcases {
 		res := FindNumberDataForE164(tc.input)
-		if res.IsGeographic != tc.want {
+		if res == nil || res.IsGeographic != tc.want {
 			t.Errorf("FindNumberDataForE164: %s in: %v   want: %v", tc.input, res.IsGeographic, tc.want)
 		}
 	}
@@ -143,12 +124,20 @@ func TestFindNumberDataForE164(t *testing.T) {
 		want  string
 	}{
 		{"+12125554448", "US"},
+		{"+447762987654", "GB"},
 		{"+14158746923", "US"},
 		{"+12125552270", "US"},
 		{"+16508982178", "US"},
 		{"+1510866949", "US"},
 		{"+19253004504", "US"},
 		{"+14085552270", "US"},
+		{"+52 55 1234 5678", "MX"},
+		{" +52 33 1234 5678 ", "MX"},
+		{"+52 222 1234 5678", "MX"},
+		{"+52 664 1234 5678", "MX"},
+		{"+52 55 1234 5678", "MX"},
+		{"+52 81 9876 5432", "MX"},
+		{"+52 33 1122 3344", "MX"},
 		{"+14156292008", "US"}}
 
 	for _, tc := range testcases {
@@ -162,58 +151,24 @@ func TestFindNumberDataForE164(t *testing.T) {
 	}
 }
 
-func BenchmarkFindNumberDataForE164(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-
-		testcases := []struct {
-			input string
-			want  string
-		}{
-			{"+12125554448", "US"},
-			{"+14158746923", "US"},
-			{"+12125552270", "US"},
-			{"+16508982178", "US"},
-			{"+1510866949", "US"},
-			{"+19253004504", "US"},
-			{"+14085552270", "US"},
-			{"+14156292008", "US"}}
-
-		for _, tc := range testcases {
-			res := FindNumberDataForE164(tc.input)
-			if res != nil && res.RegionCode != tc.want {
-				b.Errorf("FindNumberDataForE164: %s in: %v   want: %v", tc.input, res.RegionCode, tc.want)
-			}
-		}
-	}
-}
-
-func BenchmarkFindNumberDataForE164v0(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-
-		testcases := []struct {
-			input string
-			want  string
-		}{
-			{"+12125554448", "US"},
-			{"+14158746923", "US"},
-			{"+12125552270", "US"},
-			{"+16508982178", "US"},
-			{"+1510866949", "US"},
-			{"+19253004504", "US"},
-			{"+14085552270", "US"},
-			{"+14156292008", "US"}}
-
-		for _, tc := range testcases {
-			res := FindNumberDataForE164v0(tc.input)
-			if res != nil && res.RegionCode != tc.want {
-				b.Errorf("FindNumberDataForE164: %s in: %v   want: %v", tc.input, res.RegionCode, tc.want)
-			}
-		}
-	}
-}
 
 func FuzzFindNumberDataForE164(f *testing.F) {
-	testcases := []string{"+12125554448", "+14158746923", "+12125552270", "+16508982178", "+1510866949", "+19253004504", "+14085552270", "+14156292008"}
+	testcases := []string{"+12125554448",
+		"+14158746923",
+		"+12125552270",
+		"+16508982178",
+		"+1510866949",
+		"+19253004504",
+		"+14085552270",
+		"+14156292008",
+		"+52 55 1234 5678",
+		" +52 33 1234 5678 ",
+		"+52 222 1234 5678",
+		"+52 664 1234 5678",
+		"+52 55 1234 5678",
+		"+52 81 9876 5432",
+		"+52 33 1122 3344",
+	}
 
 	for _, tc := range testcases {
 		f.Add(tc)
@@ -224,12 +179,12 @@ func FuzzFindNumberDataForE164(f *testing.F) {
 
 		// Handles cases where the number is left as empty!
 		if len(arg) < 9 {
-			t.Skip(fmt.Sprintf("Skipping arg:`%s`; too small.", arg))
+			t.Skipf("FuzzFindNumberDataForE164 - Skipping arg:`%s`; too small.", arg)
 		}
 
 		res := FindNumberDataForE164(arg)
 		if res == nil && slices.Contains(testcases, arg) {
-			t.Errorf("NormalizeE164 fails %s", arg)
+			t.Errorf("FuzzFindNumberDataForE164 fails %s", arg)
 		}
 	})
 }
@@ -277,11 +232,44 @@ func FuzzSanitizeNumber(f *testing.F) {
 		// too small to be a phone number causing a needless failure
 		// during fuzzing.
 		if len(res) < 6 {
-			t.Skip(fmt.Sprintf("Skipping res:`%s`; too small.", res))
+			t.Skipf("Skipping res:`%s`; too small.", res)
 		}
 
 		if len(arg) != 0 && len(res) == 0 {
 			t.Errorf("NormalizeE164 fails %s --> %s", arg, res)
 		}
 	})
+}
+
+
+func BenchmarkFindNumberDataForE164(b *testing.B) {
+	testcases := []struct {
+		input string
+		want  string
+	}{
+		{"+12125554448", "US"},
+		{"+447762987654", "GB"},
+		{"+14158746923", "US"},
+		{"+12125552270", "US"},
+		{"+16508982178", "US"},
+		{"+1510866949", "US"},
+		{"+19253004504", "US"},
+		{"+14085552270", "US"},
+		{"+52 55 1234 5678", "MX"},
+		{" +52 33 1234 5678 ", "MX"},
+		{"+52 222 1234 5678", "MX"},
+		{"+52 664 1234 5678", "MX"},
+		{"+52 55 1234 5678", "MX"},
+		{"+52 81 9876 5432", "MX"},
+		{"+52 33 1122 3344", "MX"},
+		{"+14156292008", "US"}}
+
+	for i := 0; i < b.N; i++ {
+		for _, tc := range testcases {
+			res := FindNumberDataForE164(tc.input)
+			if res != nil && res.RegionCode != tc.want {
+				b.Errorf("FindNumberDataForE164: %s in: %v   want: %v", tc.input, res.RegionCode, tc.want)
+			}
+		}
+	}
 }

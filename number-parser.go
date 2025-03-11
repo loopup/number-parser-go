@@ -1,13 +1,8 @@
 package numberparser
 
 import (
-	"cmp"
 	_ "embed"
-	"log"
 
-	"time"
-
-	"slices"
 	"strings"
 
 	"github.com/gocarina/gocsv"
@@ -18,72 +13,69 @@ import (
 // The embed directive loads the file into the binary and the next line makes it available
 // into the variable `PhoneNumberDataCsv`
 //
-//go:embed prefix_data.csv
+//go:embed number-prefix-data.csv
 var PhoneNumberDataCsv string
 
 var (
-	PhoneNumberData    []PhoneNumberItem            = nil
-	PhoneNumberDataMap map[string][]PhoneNumberItem = nil
+	PhoneNumberCodex map[string]*CodexCountryItem = nil // zone :-> country :-> array PhoneNumberItem
 )
+
+type CodexCountryItem struct {
+	ZoneId         rune
+	CountryCode    string
+	LenCountryCode int
+	MaxLenPrefix   int
+	PrefixMap      map[string]*PhoneNumberItem
+}
 
 // Represents each entry in the prefix_data.csv file
 type PhoneNumberItem struct {
-	RegionCode   string `csv:"region_code"`
-	NumberPrefix string `csv:"number_prefix"`
-	IsGeographic bool   `csv:"is_geographic"`
-	IsMobile     bool   `csv:"is_mobile"`
-	IsSatellite  bool   `csv:"is_satellite"`
+	ZoneId          rune   `csv:"zone_id"`
+	CountryCode     string `csv:"country_code"`
+	RegionCode      string `csv:"region_code"`
+	NumberPrefix    string `csv:"number_prefix"`
+	IsGeographic    bool   `csv:"is_geographic"`
+	IsMobile        bool   `csv:"is_mobile"`
+	IsSatellite     bool   `csv:"is_satellite"`
+	LenCountryCode  int    `csv:"cc_len"`
+	LenNumberPrefix int    `csv:"prefix_len"`
 }
 
 // Loads the file prefix_data.csv into memory to allow number parsing via FindNumberDataForE164
 func init() {
-	var prefixKeys = []string{"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"}
-
 	// Clear any existing data
-	PhoneNumberData = make([]PhoneNumberItem, 128000)
-	PhoneNumberDataMap = make(map[string][]PhoneNumberItem, 9)
+	PhoneNumberCodex = make(map[string]*CodexCountryItem)
 
-	ttx := time.Now()
+	counterLines := 0
+	counterCountries := 0
+	//counterZones := 0
+	//counterPrefixes := 0
+
+	//ttx := time.Now()
 	gocsv.UnmarshalStringToCallback(PhoneNumberDataCsv, func(item PhoneNumberItem) {
-		for _, key := range prefixKeys {
-			if strings.HasPrefix(item.NumberPrefix, key) {
-				//log.Printf("Storing in i:%d key:`%s` <- %v", i, key, item)
-				PhoneNumberDataMap[key] = append(PhoneNumberDataMap[key], item)
+		counterLines++
+		//log.Printf("ZoneId: %v CountryCode: %v Prefix:%v <-- %v", item.ZoneId, item.CountryCode, item.NumberPrefix, item)
+		// Initialize the map on-demand..
+
+		cci := PhoneNumberCodex[item.CountryCode]
+		if cci == nil {
+			cci = &CodexCountryItem{CountryCode: item.CountryCode, LenCountryCode: item.LenCountryCode, ZoneId: item.ZoneId, PrefixMap: make(map[string]*PhoneNumberItem)}
+			counterCountries++
+			//log.Printf("  Stored new prefix. len:%d  item: %v", len(cci.PrefixMap), cci.PrefixMap[item.NumberPrefix])
+			PhoneNumberCodex[item.CountryCode] = cci
+		}
+
+		if cci != nil {
+			// Keep track of the max prefix length for this country code
+			if cci.MaxLenPrefix < item.LenNumberPrefix {
+				cci.MaxLenPrefix = item.LenNumberPrefix
 			}
+			// Store the item
+			cci.PrefixMap[item.NumberPrefix] = &item
 		}
 	})
-	log.Printf("Finished Unpacking CSV into map size:%v ttx:%v", len(PhoneNumberDataMap), time.Since(ttx))
-
-	ttx = time.Now()
-	err := gocsv.UnmarshalString(PhoneNumberDataCsv, &PhoneNumberData)
-	if err != nil {
-		log.Fatalf("Unable to load the csv embed")
-		return
-	}
-	log.Printf("Finished Unpacking CSV into array ttx:%v", time.Since(ttx))
-
-	// Next, we should sort the data as follows:
-	// Country then the largest prefix in descending order
-	ttx = time.Now()
-	slices.SortFunc(PhoneNumberData, func(i, j PhoneNumberItem) int {
-		return cmp.Or(
-			cmp.Compare(j.RegionCode, i.RegionCode),
-			cmp.Compare(len(j.NumberPrefix), len(i.NumberPrefix)),
-		)
-	})
-	log.Printf("Finished Sorting array ttx:%v", time.Since(ttx))
-
-	// Sort the map
-	ttx = time.Now()
-	for _, key := range prefixKeys {
-		slices.SortFunc(PhoneNumberDataMap[key], func(i, j PhoneNumberItem) int {
-			return cmp.Or(
-				cmp.Compare(i.RegionCode, j.RegionCode),               // ascending
-				cmp.Compare(len(j.NumberPrefix), len(i.NumberPrefix)), // descending
-			)
-		})
-	}
-	log.Printf("Finished Sorting map ttx:%v", time.Since(ttx))
+	//log.Printf("Finished Unpacking CSV into codex size:%v ttx:%v", len(PhoneNumberCodex), time.Since(ttx))
+	//log.Printf("Lines:%d  Zones:%d  Countries:%d  Prefixes:%d", counterLines, counterZones, counterCountries, counterPrefixes)
 }
 
 // Noramlizes the argument if it does not have a preceeding `+` then the result will have the `+` prefixed.
@@ -107,25 +99,26 @@ func SanitizeNumber(phone string) string {
 		" ", "").Replace(phone) // remove all spaces
 }
 
-// Given a e164 argument, check if we have a match against our PhoneNumberData and return the PhoneNumberItem record.
-// This function will normalize the argument to remove preceeding `+` or `0`
-func FindNumberDataForE164v0(e164 string) *PhoneNumberItem {
-	e164 = SanitizeNumber(e164)
+// Returns the country code information matching the country code by scanning the first 1-3 digits of the argument
+// It is required that you pass in result of
+func FindCodexCountryItem(e164 string) *CodexCountryItem {
+	cc1d := e164[:1]
+	cc2d := e164[:2]
+	cc3d := e164[:3]
 
-	i := slices.IndexFunc(PhoneNumberData, func(pnd PhoneNumberItem) bool {
-		// For instance s -> `1` and our target is args.DestinationDdi
-		// We want to check that we have s as a prefix of args.DestinationDdi
-		//log.Printf(" - Examine prefix %s in e164:%s", pnd.NumberPrefix, e164)
-		return len(pnd.NumberPrefix) > 0 && strings.HasPrefix(e164, pnd.NumberPrefix)
-	})
-
-	// The goal is to find the largest matching substring in the PhoneNumberData with the e164 argument
-	// So for instance we have 5492314403 an entry that corresponds to Armenia mobile. Quite a large number
-	// to perform a left-to-right match.
-	// Start by matching the number exactly.
-
-	if i != -1 {
-		return &PhoneNumberData[i]
+	if cc1d != "+" {
+		// Search for two-digit country first
+		// next search for 1-digit country
+		// last search for 3-digit county codes
+		// This approach is based on the frequency of use and the
+		// size of the dataset.
+		if cci := PhoneNumberCodex[cc2d]; cci != nil {
+			return cci
+		} else if cci := PhoneNumberCodex[cc1d]; cci != nil {
+			return cci
+		} else if cci := PhoneNumberCodex[cc3d]; cci != nil {
+			return cci
+		}
 	}
 
 	return nil
@@ -137,26 +130,18 @@ func FindNumberDataForE164v0(e164 string) *PhoneNumberItem {
 // The previous version
 func FindNumberDataForE164(e164 string) *PhoneNumberItem {
 	if e164 = SanitizeNumber(e164); len(e164) > 1 {
-		firstPrefixCharacter := string([]rune(e164)[0])
-
-		//log.Printf("FindNumberDataForE164v2 - e164:%v  `%v` in map len:%d of total:%d", e164, firstPrefixCharacter, len(PhoneNumberDataMap[firstPrefixCharacter]), len(PhoneNumberDataMap))
-
-		i := slices.IndexFunc(PhoneNumberDataMap[firstPrefixCharacter], func(pnd PhoneNumberItem) bool {
-			// For instance s -> `1` and our target is args.DestinationDdi
-			// We want to check that we have s as a prefix of args.DestinationDdi
-			//log.Printf("FindNumberDataForE164v2 - Examine prefix %s in e164:%s", pnd.NumberPrefix, e164)
-			return len(pnd.NumberPrefix) > 0 && strings.HasPrefix(e164, pnd.NumberPrefix)
-		})
-
-		// The goal is to find the largest matching substring in the PhoneNumberData with the e164 argument
-		// So for instance we have 5492314403 an entry that corresponds to Armenia mobile. Quite a large number
-		// to perform a left-to-right match.
-		// Start by matching the number exactly.
-
-		if i != -1 {
-			return &PhoneNumberDataMap[firstPrefixCharacter][i]
+		if cci := FindCodexCountryItem(e164); cci != nil {
+			for pfl := cci.MaxLenPrefix; pfl >= cci.LenCountryCode; pfl-- {
+				if pfl > len(e164) {
+					pfl = len(e164)
+				}
+				pf := e164[:pfl]
+				//log.Printf("  search e164:%s  pfl:%v  pf:%v  cclen:%v mapsize:%d..", e164, pfl, pf, cci.LenCountryCode, len(cci.PrefixMap))
+				if pfm := cci.PrefixMap[pf]; pfm != nil {
+					return pfm
+				}
+			}
 		}
 	}
-
 	return nil
 }

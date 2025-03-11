@@ -1,0 +1,38 @@
+[
+    {
+        "zoneId": 1,
+        "name": "North American Number Plan"
+    },
+    {
+        "zoneId": 2,
+        "name": "Africa"
+    },
+    {
+        "zoneId": 3,
+        "name": "Europe"
+    },
+    {
+        "zoneId": 4,
+        "name": "Europe"
+    },
+    {
+        "zoneId": 5,
+        "name": "South and Central Americas"
+    },
+    {
+        "zoneId": 6,
+        "name": "Southeast Asia and Oceania"
+    },
+    {
+        "zoneId": 7,
+        "name": "Russia and Neighboring Regions"
+    },
+    {
+        "zoneId": 8,
+        "name": "East Asia, South Asia, and special services"
+    },
+    {
+        "zoneId": 9,
+        "name": "West, Central and South Asia and part of Eastern Europe"
+    }
+]

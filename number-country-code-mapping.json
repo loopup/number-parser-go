@@ -1,0 +1,1860 @@
+[
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "description": "United States, including United States territories and Canada"
+    },
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "prefix": "1340",
+        "description": "United States Virgin Islands"
+    },
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "prefix": "1670",
+        "description": "Northern Mariana Islands"
+    },
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "prefix": "1671",
+        "description": "Guam"
+    },
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "prefix": "1684",
+        "description": "American Samoa"
+    },
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "prefix": "1787",
+        "description": "Puerto Rico"
+    },
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "prefix": "1939",
+        "description": "Puerto Rico"
+    },
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "prefix": "1242",
+        "description": "Bahamas"
+    },
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "prefix": "1246",
+        "description": "Barbados"
+    },
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "prefix": "1264",
+        "description": "Anguilla"
+    },
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "prefix": "1268",
+        "description": "Antigua and Barbuda"
+    },
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "prefix": "1284",
+        "description": "British Virgin Islands"
+    },
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "prefix": "1345",
+        "description": "Cayman Islands"
+    },
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "prefix": "1441",
+        "description": "Bermuda"
+    },
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "prefix": "1473",
+        "description": "Grenada"
+    },
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "prefix": "1649",
+        "description": "Turks and Caicos Islands"
+    },
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "prefix": "1658",
+        "description": "Jamaica"
+    },
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "prefix": "1876",
+        "description": "Jamaica"
+    },
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "prefix": "1664",
+        "description": "Montserrat"
+    },
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "prefix": "1721",
+        "description": "Sint Maarten"
+    },
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "prefix": "1758",
+        "description": "Saint Lucia"
+    },
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "prefix": "1767",
+        "description": "Dominica"
+    },
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "prefix": "1784",
+        "description": "Saint Vincent and the Grenadines"
+    },
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "prefix": "1809",
+        "description": "Dominican Republic"
+    },
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "prefix": "1829",
+        "description": "Dominican Republic"
+    },
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "prefix": "1849",
+        "description": "Dominican Republic"
+    },
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "prefix": "1868",
+        "description": "Trinidad and Tobago"
+    },
+    {
+        "zoneId": 1,
+        "countryCode": "1",
+        "prefix": "1869",
+        "description": "Saint Kitts and Nevis"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "20",
+        "description": "Egypt"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "210",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "211",
+        "description": "South Sudan"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "212",
+        "description": "Morocco (including Western Sahara)"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "213",
+        "description": "Algeria"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "214",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "215",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "216",
+        "description": "Tunisia"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "217",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "218",
+        "description": "Libya"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "219",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "220",
+        "description": "Gambia"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "221",
+        "description": "Senegal"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "222",
+        "description": "Mauritania"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "223",
+        "description": "Mali"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "224",
+        "description": "Guinea"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "225",
+        "description": "Ivory Coast"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "226",
+        "description": "Burkina Faso"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "227",
+        "description": "Niger"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "228",
+        "description": "Togo"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "229",
+        "description": "Benin"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "230",
+        "description": "Mauritius"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "231",
+        "description": "Liberia"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "232",
+        "description": "Sierra Leone"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "233",
+        "description": "Ghana"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "234",
+        "description": "Nigeria"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "235",
+        "description": "Chad"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "236",
+        "description": "Central African Republic"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "237",
+        "description": "Cameroon"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "238",
+        "description": "Cape Verde"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "239",
+        "description": "São Tomé and Príncipe"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "240",
+        "description": "Equatorial Guinea"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "241",
+        "description": "Gabon"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "242",
+        "description": "Republic of the Congo"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "243",
+        "description": "Democratic Republic of the Congo"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "244",
+        "description": "Angola"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "245",
+        "description": "Guinea-Bissau"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "246",
+        "description": "British Indian Ocean Territory"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "247",
+        "description": "Ascension Island"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "248",
+        "description": "Seychelles"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "249",
+        "description": "Sudan"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "250",
+        "description": "Rwanda"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "251",
+        "description": "Ethiopia"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "252",
+        "description": "Somalia (including  Somaliland)"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "253",
+        "description": "Djibouti"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "254",
+        "description": "Kenya"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "255",
+        "description": "Tanzania"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "255",
+        "prefix": "25524",
+        "description": "Zanzibar, in place of never-implemented 259"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "256",
+        "description": "Uganda"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "257",
+        "description": "Burundi"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "258",
+        "description": "Mozambique"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "259",
+        "description": "unassigned (was intended for People's Republic of Zanzibar but never implemented see 255 Tanzania)"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "260",
+        "description": "Zambia"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "261",
+        "description": "Madagascar"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "262",
+        "description": "Réunion"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "263",
+        "description": "Zimbabwe"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "264",
+        "description": "Namibia (formerly 27 (6x) as South West Africa)"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "265",
+        "description": "Malawi"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "266",
+        "description": "Lesotho"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "267",
+        "description": "Botswana"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "268",
+        "description": "Eswatini"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "269",
+        "description": "Comoros (formerly assigned to Mayotte, now at 262)"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "27",
+        "description": "South Africa"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "280",
+        "description": "unassigned (reserved for country code expansion)"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "281",
+        "description": "unassigned (reserved for country code expansion)"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "282",
+        "description": "unassigned (reserved for country code expansion)"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "283",
+        "description": "unassigned (reserved for country code expansion)"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "284",
+        "description": "unassigned (reserved for country code expansion)"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "285",
+        "description": "unassigned (reserved for country code expansion)"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "286",
+        "description": "unassigned (reserved for country code expansion)"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "287",
+        "description": "unassigned (reserved for country code expansion)"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "288",
+        "description": "unassigned (reserved for country code expansion)"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "289",
+        "description": "unassigned (reserved for country code expansion)"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "290",
+        "description": "Saint Helena"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "290",
+        "prefix": "2908",
+        "description": "Tristan da Cunha"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "291",
+        "description": "Eritrea"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "292",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "293",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "294",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "295",
+        "description": "unassigned (formerly assigned to San Marino, now at 378)"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "296",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "297",
+        "description": "Aruba"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "298",
+        "description": "Faroe Islands"
+    },
+    {
+        "zoneId": 2,
+        "countryCode": "299",
+        "description": "Greenland"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "30",
+        "description": "Greece"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "31",
+        "description": "Netherlands"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "32",
+        "description": "Belgium"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "33",
+        "description": "France"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "34",
+        "description": "Spain"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "350",
+        "description": "Gibraltar"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "351",
+        "description": "Portugal"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "352",
+        "description": "Luxembourg"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "353",
+        "description": "Ireland"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "354",
+        "description": "Iceland"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "355",
+        "description": "Albania"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "356",
+        "description": "Malta"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "357",
+        "description": "Cyprus (including  Akrotiri and Dhekelia)"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "358",
+        "description": "Finland"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "359",
+        "description": "Bulgaria"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "36",
+        "description": "Hungary (formerly assigned to Turkey, now at 90)"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "37",
+        "description": "formerly assigned to East Germany until its reunification with West Germany, now part of 49 Germany"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "370",
+        "description": "Lithuania"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "371",
+        "description": "Latvia"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "372",
+        "description": "Estonia"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "373",
+        "description": "Moldova"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "374",
+        "description": "Armenia"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "375",
+        "description": "Belarus"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "376",
+        "description": "Andorra (formerly 33 628)"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "377",
+        "description": "Monaco (formerly 33 93)"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "378",
+        "description": "San Marino (interchangeably with 39 0549; earlier was allocated 295 but never used)"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "379",
+        "description": "Vatican City (assigned but uses 39 06698)."
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "38",
+        "description": "formerly assigned to Yugoslavia until its break-up in 1991"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "380",
+        "description": "Ukraine"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "381",
+        "description": "Serbia"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "382",
+        "description": "Montenegro"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "383",
+        "description": "Kosovo"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "384",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "385",
+        "description": "Croatia"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "386",
+        "description": "Slovenia"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "387",
+        "description": "Bosnia and Herzegovina"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "388",
+        "description": "unassigned (formerly assigned to the European Telephony Numbering Space)"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "389",
+        "description": "North Macedonia"
+    },
+    {
+        "zoneId": 3,
+        "countryCode": "39",
+        "description": "Italy"
+    },
+    {
+        "zoneId": 4,
+        "countryCode": "40",
+        "description": "Romania"
+    },
+    {
+        "zoneId": 4,
+        "countryCode": "41",
+        "description": " Switzerland"
+    },
+    {
+        "zoneId": 4,
+        "countryCode": "42",
+        "description": "formerly assigned to Czechoslovakia, later to its breakup successors (CZ, SK) until 1997"
+    },
+    {
+        "zoneId": 4,
+        "countryCode": "420",
+        "description": "Czech Republic"
+    },
+    {
+        "zoneId": 4,
+        "countryCode": "421",
+        "description": "Slovakia"
+    },
+    {
+        "zoneId": 4,
+        "countryCode": "422",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 4,
+        "countryCode": "423",
+        "description": "Liechtenstein (formerly at 41 (75))"
+    },
+    {
+        "zoneId": 4,
+        "countryCode": "424",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 4,
+        "countryCode": "425",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 4,
+        "countryCode": "426",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 4,
+        "countryCode": "427",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 4,
+        "countryCode": "428",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 4,
+        "countryCode": "429",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 4,
+        "countryCode": "43",
+        "description": "Austria"
+    },
+    {
+        "zoneId": 4,
+        "countryCode": "44",
+        "description": "United Kingdom"
+    },
+    {
+        "zoneId": 4,
+        "countryCode": "44",
+        "prefix": "441481",
+        "description": "Guernsey"
+    },
+    {
+        "zoneId": 4,
+        "countryCode": "44",
+        "prefix": "441534",
+        "description": "Jersey"
+    },
+    {
+        "zoneId": 4,
+        "countryCode": "44",
+        "prefix": "441624",
+        "description": "Isle of Man"
+    },
+    {
+        "zoneId": 4,
+        "countryCode": "45",
+        "description": "Denmark"
+    },
+    {
+        "zoneId": 4,
+        "countryCode": "46",
+        "description": "Sweden"
+    },
+    {
+        "zoneId": 4,
+        "countryCode": "47",
+        "description": "Norway"
+    },
+    {
+        "zoneId": 4,
+        "countryCode": "47",
+        "prefix": "4779",
+        "description": "Svalbard"
+    },
+    {
+        "zoneId": 4,
+        "countryCode": "48",
+        "description": "Poland"
+    },
+    {
+        "zoneId": 4,
+        "countryCode": "49",
+        "description": "Germany"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "500",
+        "description": "Falkland Islands"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "500",
+        "description": "South Georgia and the South Sandwich Islands"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "501",
+        "description": "Belize"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "502",
+        "description": "Guatemala"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "503",
+        "description": "El Salvador"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "504",
+        "description": "Honduras"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "505",
+        "description": "Nicaragua"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "506",
+        "description": "Costa Rica"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "507",
+        "description": "Panama"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "508",
+        "description": "Saint-Pierre and Miquelon"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "509",
+        "description": "Haiti"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "51",
+        "description": "Peru"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "52",
+        "description": "Mexico"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "53",
+        "description": "Cuba"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "54",
+        "description": "Argentina"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "55",
+        "description": "Brazil"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "56",
+        "description": "Chile"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "57",
+        "description": "Colombia"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "58",
+        "description": "Venezuela"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "590",
+        "description": "Guadeloupe (including Saint Barthélemy, Saint Martin)"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "591",
+        "description": "Bolivia"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "592",
+        "description": "Guyana"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "593",
+        "description": "Ecuador"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "594",
+        "description": "French Guiana"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "595",
+        "description": "Paraguay"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "596",
+        "description": "Martinique (formerly assigned to Peru, now 51)"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "597",
+        "description": "Suriname"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "598",
+        "description": "Uruguay"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "599",
+        "description": "Former  Netherlands Antilles, now grouped as follows:"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "599",
+        "prefix": "5993",
+        "description": "Sint Eustatius"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "599",
+        "prefix": "5994",
+        "description": "Saba"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "599",
+        "prefix": "5995",
+        "description": "unassigned (formerly assigned to Sint Maarten, now included in NANP as 1 (721))"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "599",
+        "prefix": "5997",
+        "description": "Bonaire"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "599",
+        "prefix": "5998",
+        "description": "unassigned (formerly assigned to Aruba, now at 297)"
+    },
+    {
+        "zoneId": 5,
+        "countryCode": "599",
+        "prefix": "5999",
+        "description": "Curaçao"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "60",
+        "description": "Malaysia"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "61",
+        "description": "Australia (see also 672 below)"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "61",
+        "prefix": "6189162",
+        "description": "Cocos Islands"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "61",
+        "prefix": "6189164",
+        "description": "Christmas Island"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "62",
+        "description": "Indonesia"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "63",
+        "description": "Philippines"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "64",
+        "description": "New Zealand"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "64",
+        "description": "Pitcairn Islands"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "65",
+        "description": "Singapore"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "66",
+        "description": "Thailand"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "670",
+        "description": "East Timor (formerly 62/39 during the Indonesian occupation; formerly assigned to Northern Mariana Islands, now part of NANP as 1 (670))"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "671",
+        "description": "unassigned (formerly assigned to Guam, now part of NANP as 1 (671))"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "672",
+        "description": "Australian External Territories (see also 61 Australia above); formerly assigned to Portuguese Timor (see 670)"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "672",
+        "prefix": "6721",
+        "description": "Australia Australian Antarctic Territory"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "672",
+        "prefix": "6723",
+        "description": "Norfolk Island"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "673",
+        "description": "Brunei"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "674",
+        "description": "Nauru"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "675",
+        "description": "Papua New Guinea"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "676",
+        "description": "Tonga"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "677",
+        "description": "Solomon Islands"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "678",
+        "description": "Vanuatu"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "679",
+        "description": "Fiji"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "680",
+        "description": "Palau"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "681",
+        "description": "Wallis and Futuna"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "682",
+        "description": "Cook Islands"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "683",
+        "description": "Niue"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "684",
+        "description": "unassigned (formerly assigned to American Samoa, now part of NANP as 1 (684))"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "685",
+        "description": "Samoa"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "686",
+        "description": "Kiribati"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "687",
+        "description": "New Caledonia"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "688",
+        "description": "Tuvalu"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "689",
+        "description": "French Polynesia"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "690",
+        "description": "Tokelau"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "691",
+        "description": "Federated States of Micronesia"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "692",
+        "description": "Marshall Islands"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "693",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "694",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "695",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "696",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "697",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "698",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 6,
+        "countryCode": "699",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 7,
+        "countryCode": "71",
+        "description": "Russia"
+    },
+    {
+        "zoneId": 7,
+        "countryCode": "72",
+        "description": "Russia"
+    },
+    {
+        "zoneId": 7,
+        "countryCode": "73",
+        "description": "Russia"
+    },
+    {
+        "zoneId": 7,
+        "countryCode": "74",
+        "description": "Russia"
+    },
+    {
+        "zoneId": 7,
+        "countryCode": "75",
+        "description": "Russia"
+    },
+    {
+        "zoneId": 7,
+        "countryCode": "78",
+        "description": "Russia"
+    },
+    {
+        "zoneId": 7,
+        "countryCode": "79",
+        "description": "Russia"
+    },
+    {
+        "zoneId": 7,
+        "countryCode": "70",
+        "description": "Kazakhstan"
+    },
+    {
+        "zoneId": 7,
+        "countryCode": "76",
+        "description": "Kazakhstan"
+    },
+    {
+        "zoneId": 7,
+        "countryCode": "77",
+        "description": "Kazakhstan"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "800",
+        "description": "Universal International Freephone Service"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "801",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "802",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "803",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "804",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "805",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "806",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "807",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "808",
+        "description": "Universal International Shared Cost Numbers"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "809",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "81",
+        "description": "Japan"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "82",
+        "description": "South Korea"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "830",
+        "description": "unassigned (reserved for country code expansion)[2]"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "831",
+        "description": "unassigned (reserved for country code expansion)[2]"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "832",
+        "description": "unassigned (reserved for country code expansion)[2]"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "833",
+        "description": "unassigned (reserved for country code expansion)[2]"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "834",
+        "description": "unassigned (reserved for country code expansion)[2]"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "835",
+        "description": "unassigned (reserved for country code expansion)[2]"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "836",
+        "description": "unassigned (reserved for country code expansion)[2]"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "837",
+        "description": "unassigned (reserved for country code expansion)[2]"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "838",
+        "description": "unassigned (reserved for country code expansion)[2]"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "839",
+        "description": "unassigned (reserved for country code expansion)[2]"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "84",
+        "description": "Vietnam"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "850",
+        "description": "North Korea"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "851",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "852",
+        "description": "Hong Kong"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "853",
+        "description": "Macau"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "854",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "855",
+        "description": "Cambodia"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "856",
+        "description": "Laos"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "857",
+        "description": "unassigned (formerly assigned to ANAC satellite service)"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "858",
+        "description": "unassigned (formerly assigned to ANAC satellite service)"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "859",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "86",
+        "description": "China"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "870",
+        "description": "Global Mobile Satellite System (Inmarsat)"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "871",
+        "description": "unassigned (formerly assigned to Inmarsat Atlantic East, discontinued in 2008)"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "872",
+        "description": "unassigned (formerly assigned to Inmarsat Pacific, discontinued in 2008)"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "873",
+        "description": "unassigned (formerly assigned to Inmarsat Indian, discontinued in 2008)"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "874",
+        "description": "unassigned (formerly assigned to Inmarsat Atlantic West, discontinued in 2008)"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "875",
+        "description": "unassigned (reserved for future maritime mobile service)"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "876",
+        "description": "unassigned (reserved for future maritime mobile service)"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "877",
+        "description": "unassigned (reserved for future maritime mobile service)"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "878",
+        "description": "unassigned (formerly used for Universal Personal Telecommunications Service, discontinued in 2022)"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "879",
+        "description": "unassigned (reserved for national non-commercial purposes)"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "880",
+        "description": "Bangladesh"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "881",
+        "description": "Global Mobile Satellite System"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "882",
+        "description": "International Networks"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "883",
+        "description": "International Networks"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "884",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "885",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "886",
+        "description": "Taiwan"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "887",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "888",
+        "description": "unassigned (formerly assigned to OCHA for Telecommunications for Disaster Relief service)"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "889",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "890",
+        "description": "unassigned (reserved for country code expansion)"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "891",
+        "description": "unassigned (reserved for country code expansion)"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "892",
+        "description": "unassigned (reserved for country code expansion)"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "893",
+        "description": "unassigned (reserved for country code expansion)"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "894",
+        "description": "unassigned (reserved for country code expansion)"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "895",
+        "description": "unassigned (reserved for country code expansion)"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "896",
+        "description": "unassigned (reserved for country code expansion)"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "897",
+        "description": "unassigned (reserved for country code expansion)"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "898",
+        "description": "unassigned (reserved for country code expansion)"
+    },
+    {
+        "zoneId": 8,
+        "countryCode": "899",
+        "description": "unassigned (reserved for country code expansion)"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "90",
+        "description": "Turkey"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "91",
+        "description": "India"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "92",
+        "description": "Pakistan"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "93",
+        "description": "Afghanistan"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "94",
+        "description": "Sri Lanka"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "95",
+        "description": "Myanmar"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "960",
+        "description": "Maldives"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "961",
+        "description": "Lebanon"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "962",
+        "description": "Jordan"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "963",
+        "description": "Syria"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "964",
+        "description": "Iraq"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "965",
+        "description": "Kuwait"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "966",
+        "description": "Saudi Arabia"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "967",
+        "description": "Yemen"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "968",
+        "description": "Oman"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "969",
+        "description": "unassigned (formerly assigned to South Yemen until its unification with North Yemen, now part of 967 Yemen)"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "970",
+        "description": "Palestine (interchangeably with 972)"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "971",
+        "description": "United Arab Emirates"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "972",
+        "description": "Israel (also  Palestine, interchangeably with 970)"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "973",
+        "description": "Bahrain"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "974",
+        "description": "Qatar"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "975",
+        "description": "Bhutan"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "976",
+        "description": "Mongolia"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "977",
+        "description": "Nepal"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "978",
+        "description": "unassigned (formerly assigned to Dubai, now part of 971 United Arab Emirates)"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "979",
+        "description": "Universal International Premium Rate Service (UIPRS); (formerly assigned to Abu Dhabi, now part of 971 United Arab Emirates)"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "98",
+        "description": "Iran"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "990",
+        "description": "unassigned"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "991",
+        "description": "unassigned (formerly used for International Telecommunications Public Correspondence Service)"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "992",
+        "description": "Tajikistan"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "993",
+        "description": "Turkmenistan"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "994",
+        "description": "Azerbaijan"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "995",
+        "description": "Georgia"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "996",
+        "description": "Kyrgyzstan"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "997",
+        "description": "Kazakhstan (reserved but abandoned in November 2023; uses 7 (6xx, 7xx))"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "998",
+        "description": "Uzbekistan"
+    },
+    {
+        "zoneId": 9,
+        "countryCode": "999",
+        "description": "unassigned (reserved for future global service)"
+    }
+]
