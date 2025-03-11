@@ -51,6 +51,7 @@ steps:
       go test . -v -coverprofile=coverage.txt  2>&1 | /home/vsts/go/bin/go-junit-report > report.xml
       rc=${PIPESTATUS[0]} # Get result code of `go test`
       # Transform the coverage.txt into the format used by Azure pipeline
+      echo "Transform the coverage.txt into the format used by Azure pipeline"
       /home/vsts/go/bin/gocov convert coverage.txt > coverage.json
       /home/vsts/go/bin/gocov-xml < coverage.json > coverage.xml
   
@@ -61,6 +62,7 @@ steps:
         >&2 echo "Tests failed"
       fi
       # Compose release releaseNotes
+      echo "Compose release notes.."
       echo "Documentation https://github.com/$(Build.Repository.Name)<br/>Install: `go get -u github.com/loopup/number-parser-go`" > releaseNotes.txt
       echo " " >> releaseNotes.txt
       cat benchmark.log >> releaseNotes.txt

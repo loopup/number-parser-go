@@ -9,3 +9,7 @@
 ```sh
 go get -u github.com/loopup/number-parser-go@latest
 ```
+
+## References
+- The [country code information](https://en.wikipedia.org/wiki/List_of_telephone_country_codes) is from Wikipedia.
+- Detailed number data is partially sourced from carriers.
