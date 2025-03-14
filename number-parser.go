@@ -3,8 +3,6 @@ package numberparser
 import (
 	_ "embed"
 
-	"strings"
-
 	"github.com/gocarina/gocsv"
 )
 
@@ -17,12 +15,12 @@ import (
 var PhoneNumberDataCsv string
 
 var (
-	PhoneNumberCodex map[string]*CodexCountryItem = nil // zone :-> country :-> array PhoneNumberItem
+	PhoneNumberCodex map[int]*CodexCountryItem = nil // zone :-> country :-> array PhoneNumberItem
 )
 
 type CodexCountryItem struct {
 	ZoneId         rune
-	CountryCode    string
+	CountryCode    int
 	LenCountryCode int
 	MaxLenPrefix   int
 	PrefixMap      map[string]*PhoneNumberItem
@@ -31,7 +29,7 @@ type CodexCountryItem struct {
 // Represents each entry in the prefix_data.csv file
 type PhoneNumberItem struct {
 	ZoneId          rune   `csv:"zone_id"`
-	CountryCode     string `csv:"country_code"`
+	CountryCode     int    `csv:"country_code"`
 	RegionCode      string `csv:"region_code"`
 	NumberPrefix    string `csv:"number_prefix"`
 	IsGeographic    bool   `csv:"is_geographic"`
@@ -44,19 +42,15 @@ type PhoneNumberItem struct {
 // Loads the file prefix_data.csv into memory to allow number parsing via FindNumberDataForE164
 func init() {
 	// Clear any existing data
-	PhoneNumberCodex = make(map[string]*CodexCountryItem)
+	PhoneNumberCodex = make(map[int]*CodexCountryItem)
 
 	counterLines := 0
 	counterCountries := 0
-	//counterZones := 0
-	//counterPrefixes := 0
 
-	//ttx := time.Now()
 	gocsv.UnmarshalStringToCallback(PhoneNumberDataCsv, func(item PhoneNumberItem) {
 		counterLines++
 		//log.Printf("ZoneId: %v CountryCode: %v Prefix:%v <-- %v", item.ZoneId, item.CountryCode, item.NumberPrefix, item)
 		// Initialize the map on-demand..
-
 		cci := PhoneNumberCodex[item.CountryCode]
 		if cci == nil {
 			cci = &CodexCountryItem{CountryCode: item.CountryCode, LenCountryCode: item.LenCountryCode, ZoneId: item.ZoneId, PrefixMap: make(map[string]*PhoneNumberItem)}
@@ -81,44 +75,109 @@ func init() {
 // Noramlizes the argument if it does not have a preceeding `+` then the result will have the `+` prefixed.
 // If the argument already has `+` we return the argument as-is. This is *not* number validation!
 func NormalizeE164(phone string) string {
-	// Returns the number iff it has a ` ` prefix
-	phone = SanitizeNumber(phone)
-	return "+" + phone
+	// Allocate the result rune slice and just copy items into it
+	var processedPhone []rune = make([]rune, len(phone)+1)
+	// Track the length of the result string
+	var p int = 0
+	// Track the previous character
+	var previous rune
+
+	// Make sure we have a leading `+`
+	processedPhone[p] = '+'
+	p++
+
+	for i, v := range phone {
+		switch v {
+		case '0': // special case of removing 0 from the first digit
+			if i != 0 && previous != '(' {
+				processedPhone[p] = v
+				p++
+			}
+			previous = v
+		case '+', ' ', '-', '(', ')', '/':
+			previous = v // skip these items from result
+		default:
+			processedPhone[p] = v
+			p++ // this is the length of the resulting string
+			previous = v
+		}
+	}
+
+	return string(processedPhone[:p])
 }
 
 // Remove all decorations from the number
 func SanitizeNumber(phone string) string {
-	// There is a special case where the leading 0 must be removed.
-	phone, _ = strings.CutPrefix(phone, "0")
-	// Remove all the items with their corresponding substitutions.
-	// Leave the "x" and ","
-	return strings.NewReplacer("-", "", // remove all dashes
-		"+", "", // remove all +
-		"(", "", // remove all left-paren
-		")", "", // remove all right-paren
-		" ", "").Replace(phone) // remove all spaces
+	// Allocate the result rune slice and just copy items into it
+	var processedPhone []rune = make([]rune, len(phone))
+	// Track the length of the result string
+	var p int = 0
+	// Track the previous character
+	var previous rune
+
+	for i, v := range phone {
+		switch v {
+		case '0': // special case of removing 0 from the first digit
+			if i != 0 && previous != '(' {
+				processedPhone[p] = v
+				p++
+			}
+			previous = v
+		case '+', ' ', '-', '(', ')', '/':
+			previous = v // skip these items from result
+		default:
+			processedPhone[p] = v
+			p++ // this is the length of the resulting string
+			previous = v
+		}
+	}
+
+	return string(processedPhone[:p])
+}
+
+// This helper returns the 1 digit, two digit and three digit prefix from the given phone number.
+// The country codes are integer values.
+// The first return value is 1d, followed by 2d and last 3d
+func getPossibleCountryCodes(str string) (int, int, int) {
+	var cc1d int = 0
+	var cc2d int = 0
+	var cc3d int = 0
+
+	for i, r := range str {
+		if i == 0 {
+			cc1d = int(r - '0')
+			cc2d = int(r-'0') * 10
+			cc3d = int(r-'0') * 100
+		} else if i == 1 {
+			cc2d = cc2d + int(r-'0')
+			cc3d = cc3d + 10*int(r-'0')
+		} else if i == 2 {
+			cc3d = cc3d + int(r-'0')
+		} else {
+			// Bail out; we've gotten beyond the country code limit
+			return cc1d, cc2d, cc3d
+		}
+	}
+
+	return cc1d, cc2d, cc3d
 }
 
 // Returns the country code information matching the country code by scanning the first 1-3 digits of the argument
 // It is required that you pass in result of
 func FindCodexCountryItem(e164 string) *CodexCountryItem {
-	cc1d := e164[:1]
-	cc2d := e164[:2]
-	cc3d := e164[:3]
+	cc1d, cc2d, cc3d := getPossibleCountryCodes(e164)
 
-	if cc1d != "+" {
-		// Search for two-digit country first
-		// next search for 1-digit country
-		// last search for 3-digit county codes
-		// This approach is based on the frequency of use and the
-		// size of the dataset.
-		if cci := PhoneNumberCodex[cc2d]; cci != nil {
-			return cci
-		} else if cci := PhoneNumberCodex[cc1d]; cci != nil {
-			return cci
-		} else if cci := PhoneNumberCodex[cc3d]; cci != nil {
-			return cci
-		}
+	// Search for two-digit country first
+	// next search for 1-digit country
+	// last search for 3-digit county codes
+	// This approach is based on the frequency of use and the
+	// size of the dataset.
+	if cci := PhoneNumberCodex[cc2d]; cci != nil {
+		return cci
+	} else if cci := PhoneNumberCodex[cc1d]; cci != nil {
+		return cci
+	} else if cci := PhoneNumberCodex[cc3d]; cci != nil {
+		return cci
 	}
 
 	return nil
