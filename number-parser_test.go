@@ -286,37 +286,6 @@ func BenchmarkSanitizeNumber(b *testing.B) {
 	}
 }
 
-func BenchmarkSanitizeNumberV3(b *testing.B) {
-	testcases := []struct {
-		input string
-		want  string
-	}{
-		{"+12125554448", "US"},
-		{"+447762987654", "GB"},
-		{"+14158746923", "US"},
-		{"+12125552270", "US"},
-		{"+16508982178", "US"},
-		{"+1510866949", "US"},
-		{"+1(925)300-4504", "US"},
-		{"+1(408)555-2270", "US"},
-		{"+52 55 1234 5678", "MX"},
-		{" +52 33 1234 5678 ", "MX"},
-		{"+52 222 1234 5678", "MX"},
-		{"+52 664 1234 5678", "MX"},
-		{"+52 81 9876 5432", "MX"},
-		{"+14156292008", "US"},
-	}
-
-	for i := 0; i < b.N; i++ {
-		for _, tc := range testcases {
-			SanitizeNumberV3(tc.input)
-			//if res != nil && res.RegionCode != tc.want {
-			//	b.Errorf("FindNumberDataForE164: %s in: %v   want: %v", tc.input, res.RegionCode, tc.want)
-			//}
-		}
-	}
-}
-
 func BenchmarkFindNumberDataForE164(b *testing.B) {
 	testcases := []struct {
 		input string

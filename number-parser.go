@@ -77,66 +77,37 @@ func init() {
 // If the argument already has `+` we return the argument as-is. This is *not* number validation!
 func NormalizeE164(phone string) string {
 	// Allocate the result rune slice and just copy items into it
-	var processedPhone []rune = make([]rune, len(phone)+1)
+	var processedPhone strings.Builder
 	// Track the length of the result string
 	var p int = 0
 	// Track the previous character
 	var previous rune
 
 	// Make sure we have a leading `+`
-	processedPhone[p] = '+'
+	processedPhone.WriteRune('+')
 	p++
 
 	for i, v := range phone {
 		switch v {
 		case '0': // special case of removing 0 from the first digit
 			if i != 0 && previous != '(' {
-				processedPhone[p] = v
+				processedPhone.WriteRune(v)
 				p++
 			}
 			previous = v
-		case '+', ' ', '-', '(', ')', '/':
+		case '+', ' ', '-', '.','(', ')', '/':
 			previous = v // skip these items from result
 		default:
-			processedPhone[p] = v
+			processedPhone.WriteRune(v)
 			p++ // this is the length of the resulting string
 			previous = v
 		}
 	}
 
-	return string(processedPhone[:p])
+	return processedPhone.String()
 }
 
-// Remove all decorations from the number
 func SanitizeNumber(phone string) string {
-	// Allocate the result rune slice and just copy items into it
-	var processedPhone []rune = make([]rune, len(phone))
-	// Track the length of the result string
-	var p int = 0
-	// Track the previous character
-	var previous rune
-
-	for i, v := range phone {
-		switch v {
-		case '0': // special case of removing 0 from the first digit
-			if i != 0 && previous != '(' {
-				processedPhone[p] = v
-				p++
-			}
-			previous = v
-		case '+', ' ', '-', '(', ')', '/':
-			previous = v // skip these items from result
-		default:
-			processedPhone[p] = v
-			p++ // this is the length of the resulting string
-			previous = v
-		}
-	}
-
-	return string(processedPhone[:p])
-}
-
-func SanitizeNumberV3(phone string) string {
 	// Allocate the result rune slice and just copy items into it
 	var processedPhone strings.Builder
 	// Track the length of the result string
