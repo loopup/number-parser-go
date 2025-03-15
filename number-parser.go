@@ -2,6 +2,7 @@ package numberparser
 
 import (
 	_ "embed"
+	"strings"
 
 	"github.com/gocarina/gocsv"
 )
@@ -133,6 +134,34 @@ func SanitizeNumber(phone string) string {
 	}
 
 	return string(processedPhone[:p])
+}
+
+func SanitizeNumberV3(phone string) string {
+	// Allocate the result rune slice and just copy items into it
+	var processedPhone strings.Builder
+	// Track the length of the result string
+	var p int = 0
+	// Track the previous character
+	var previous rune
+
+	for i, v := range phone {
+		switch v {
+		case '0': // special case of removing 0 from the first digit
+			if i != 0 && previous != '(' {
+				processedPhone.WriteRune(v)
+				p++
+			}
+			previous = v
+		case '+', ' ', '-', '(', ')', '/':
+			previous = v // skip these items from result
+		default:
+			processedPhone.WriteRune(v)
+			p++ // this is the length of the resulting string
+			previous = v
+		}
+	}
+
+	return processedPhone.String()
 }
 
 // This helper returns the 1 digit, two digit and three digit prefix from the given phone number.
