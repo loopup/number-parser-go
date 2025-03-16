@@ -16,11 +16,11 @@ import (
 var PhoneNumberDataCsv string
 
 var (
-	PhoneNumberCodex map[int]*CodexCountryItem = nil // zone :-> country :-> array PhoneNumberItem
+	PhoneNumberCodex map[int]*CodexCountryItem = nil // country :-> array PhoneNumberItem
 )
 
 type CodexCountryItem struct {
-	ZoneId         rune
+	ZoneId         int
 	CountryCode    int
 	LenCountryCode int
 	MaxLenPrefix   int
@@ -29,7 +29,7 @@ type CodexCountryItem struct {
 
 // Represents each entry in the prefix_data.csv file
 type PhoneNumberItem struct {
-	ZoneId          rune   `csv:"zone_id"`
+	ZoneId          int    `csv:"zone_id"`
 	CountryCode     int    `csv:"country_code"`
 	RegionCode      string `csv:"region_code"`
 	NumberPrefix    string `csv:"number_prefix"`
@@ -95,7 +95,7 @@ func NormalizeE164(phone string) string {
 				p++
 			}
 			previous = v
-		case '+', ' ', '-', '.','(', ')', '/':
+		case '+', ' ', '-', '.', '(', ')', '/':
 			previous = v // skip these items from result
 		default:
 			processedPhone.WriteRune(v)
@@ -188,19 +188,23 @@ func FindCodexCountryItem(e164 string) *CodexCountryItem {
 // This is the improved search version using buckets to speed up lookup of number information.
 // The previous version
 func FindNumberDataForE164(e164 string) *PhoneNumberItem {
+	var pni *PhoneNumberItem = nil
+
 	if e164 = SanitizeNumber(e164); len(e164) > 1 {
 		if cci := FindCodexCountryItem(e164); cci != nil {
+			// Build the list of the prefixes that we should search with decreasing lengths
 			for pfl := cci.MaxLenPrefix; pfl >= cci.LenCountryCode; pfl-- {
 				if pfl > len(e164) {
 					pfl = len(e164)
 				}
-				pf := e164[:pfl]
-				//log.Printf("  search e164:%s  pfl:%v  pf:%v  cclen:%v mapsize:%d..", e164, pfl, pf, cci.LenCountryCode, len(cci.PrefixMap))
-				if pfm := cci.PrefixMap[pf]; pfm != nil {
-					return pfm
+				// Search for the given prefix
+				if pni = cci.PrefixMap[e164[:pfl]]; pni != nil {
+					return pni
 				}
 			}
 		}
 	}
+	
+	// this will return a nil
 	return nil
 }

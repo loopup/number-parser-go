@@ -45,10 +45,11 @@ func TestPhoneNumberData_Mobile(t *testing.T) {
 		input string
 		want  bool
 	}{
-		{"+447762000000", true}, {"+447762987654", true},
+		{"+447762000000", true},
+		{"+447762987654", true},
 		{"+5492362336", true},
 		{"+14159991111", false},
-		{"+52 55 1234 5678", true},
+		{"+52 13 1400 0000", true},
 		{"+52 81 9876 5432", false},
 		{"+52 33 1122 3344", true},
 		{"+443111111", false},
@@ -58,6 +59,39 @@ func TestPhoneNumberData_Mobile(t *testing.T) {
 		res := FindNumberDataForE164(tc.input)
 		if res == nil || (res.IsMobile != tc.want) {
 			t.Errorf("FindNumberDataForE164: %s in: %v   want: %v", tc.input, res.IsMobile, tc.want)
+		}
+	}
+}
+
+func TestPhoneNumberData_Mobile_UK(t *testing.T) {
+	testcases := []struct {
+		input string
+		want  bool
+	}{
+		{"+447762000000", true},
+	}
+
+	for _, tc := range testcases {
+		res := FindNumberDataForE164(tc.input)
+		if res == nil || (res.IsMobile != tc.want) {
+			t.Errorf("FindNumberDataForE164: %s in: %v   want: %v", tc.input, res.IsMobile, tc.want)
+		}
+	}
+}
+
+func TestPhoneNumberData_Mobile_MX(t *testing.T) {
+	testcases := []struct {
+		input string
+		want  bool
+	}{
+		{"+52 64 4454-4600", true},
+		{"+52 13 1400 0000", true},
+	}
+
+	for _, tc := range testcases {
+		res := FindNumberDataForE164(tc.input)
+		if res == nil || (res.IsMobile != tc.want) {
+			t.Errorf("FindNumberDataForE164: %s in: %v   want: %v", tc.input, res, tc.want)
 		}
 	}
 }
