@@ -2,6 +2,7 @@ package numberparser
 
 import (
 	_ "embed"
+	"log"
 	"strings"
 
 	"github.com/gocarina/gocsv"
@@ -21,6 +22,8 @@ var (
 
 type CodexCountryItem struct {
 	ZoneId         int
+	ZoneName       string
+	ZoneGroup      string
 	CountryCode    int
 	LenCountryCode int
 	MaxLenPrefix   int
@@ -29,7 +32,9 @@ type CodexCountryItem struct {
 
 // Represents each entry in the prefix_data.csv file
 type PhoneNumberItem struct {
-	ZoneId          int    `csv:"zone_id"`
+	ZoneId          int `csv:"zone_id"`
+	ZoneName        string
+	ZoneGroup       string
 	CountryCode     int    `csv:"country_code"`
 	RegionCode      string `csv:"region_code"`
 	NumberPrefix    string `csv:"number_prefix"`
@@ -50,14 +55,51 @@ func init() {
 
 	gocsv.UnmarshalStringToCallback(PhoneNumberDataCsv, func(item PhoneNumberItem) {
 		counterLines++
-		//log.Printf("ZoneId: %v CountryCode: %v Prefix:%v <-- %v", item.ZoneId, item.CountryCode, item.NumberPrefix, item)
+		// Mapping uses the following source: https://en.wikipedia.org/wiki/List_of_telephone_country_codes#World_numbering_zones.
+		switch item.ZoneId {
+		case 1:
+			item.ZoneName = "North American Numbering Plan"
+			item.ZoneGroup = "Americas"
+		case 2:
+			item.ZoneName = "Africa"
+			item.ZoneGroup = "MEA"
+		case 3, 4:
+			item.ZoneName = "Europe"
+			item.ZoneGroup = "Europe"
+		case 5:
+			item.ZoneName = "Central and South America"
+			item.ZoneGroup = "Americas"
+		case 6:
+			item.ZoneName = "Southeast Asia and Oceania"
+			item.ZoneGroup = "APAC"
+		case 7:
+			item.ZoneName = "Russia and Kazakhstan"
+		case 8:
+			item.ZoneName = "East and South Asia"
+			item.ZoneGroup = "APAC"
+		case 9:
+			item.ZoneName = "Middle East, Asia, Eastern Europe"
+			item.ZoneGroup = "MEA"
+		default:
+			item.ZoneName = "Unknown"
+		}
+		/*
+			if item.ZoneId == 8 {
+				log.Printf("ZoneId: %v CountryCode: %v Prefix:%v <-- %v", item.ZoneId, item.CountryCode, item.NumberPrefix, item)
+			}
+		*/
 		// Initialize the map on-demand..
 		cci := PhoneNumberCodex[item.CountryCode]
 		if cci == nil {
-			cci = &CodexCountryItem{CountryCode: item.CountryCode, LenCountryCode: item.LenCountryCode, ZoneId: item.ZoneId, PrefixMap: make(map[string]*PhoneNumberItem)}
+			// Set the CodexCountryItem properties
+			cci = &CodexCountryItem{ZoneId: item.ZoneId, ZoneName: item.ZoneName, ZoneGroup: item.ZoneGroup, CountryCode: item.CountryCode, LenCountryCode: item.LenCountryCode, PrefixMap: make(map[string]*PhoneNumberItem)}
 			counterCountries++
-			//log.Printf("  Stored new prefix. len:%d  item: %v", len(cci.PrefixMap), cci.PrefixMap[item.NumberPrefix])
+
+			// Store the item
 			PhoneNumberCodex[item.CountryCode] = cci
+			//if item.CountryCode == 852 {
+			//	log.Printf("Stored ZoneId: %v CountryCode: %v Prefix:%v <-- %v  in map %v", item.ZoneId, item.CountryCode, item.NumberPrefix, cci, PhoneNumberCodex[item.CountryCode])
+			//}
 		}
 
 		if cci != nil {
@@ -67,6 +109,9 @@ func init() {
 			}
 			// Store the item
 			cci.PrefixMap[item.NumberPrefix] = &item
+			//if item.CountryCode == 852 {
+			//	log.Printf("Stored item ZoneId: %v CountryCode: %v Prefix:%v <-- %v  in prefix map %v", item.ZoneId, item.CountryCode, item.NumberPrefix, cci, PhoneNumberCodex[item.CountryCode].PrefixMap[item.NumberPrefix])
+			//}
 		}
 	})
 	//log.Printf("Finished Unpacking CSV into codex size:%v ttx:%v", len(PhoneNumberCodex), time.Since(ttx))
@@ -167,19 +212,23 @@ func getPossibleCountryCodes(str string) (int, int, int) {
 func FindCodexCountryItem(e164 string) *CodexCountryItem {
 	cc1d, cc2d, cc3d := getPossibleCountryCodes(e164)
 
-	// Search for two-digit country first
-	// next search for 1-digit country
-	// last search for 3-digit county codes
-	// This approach is based on the frequency of use and the
-	// size of the dataset.
-	if cci := PhoneNumberCodex[cc2d]; cci != nil {
+	//log.Printf("Trying to find CodexCountryItem for e164:%v   cc[%v,%v,%v] ", e164, cc1d, cc2d, cc3d)
+
+	// First search for 3-digit country first
+	// next search for 2-digit country
+	// last search for 1-digit county codes
+	if cci := PhoneNumberCodex[cc3d]; cci != nil {
+		//log.Printf("Using CodexCountryItem for e164:%v   cc3[%v]: %v ", e164, cc3d, cci)
+		return cci
+	} else if cci := PhoneNumberCodex[cc2d]; cci != nil {
+		//log.Printf("Using CodexCountryItem for e164:%v   cc1[%v]: %v ", e164, cc1d, cci)
 		return cci
 	} else if cci := PhoneNumberCodex[cc1d]; cci != nil {
-		return cci
-	} else if cci := PhoneNumberCodex[cc3d]; cci != nil {
+		//log.Printf("Using CodexCountryItem for e164:%v   cc2[%v]: %v ", e164, cc2d, cci)
 		return cci
 	}
 
+	log.Printf("Unable to find CodexCountryItem for e164:%v", e164)
 	return nil
 }
 
@@ -193,6 +242,7 @@ func FindNumberDataForE164(e164 string) *PhoneNumberItem {
 	if e164 = SanitizeNumber(e164); len(e164) > 1 {
 		if cci := FindCodexCountryItem(e164); cci != nil {
 			// Build the list of the prefixes that we should search with decreasing lengths
+			//log.Printf("FindNumberDataForE164 - Scanning for %v in cci:%v ...", e164, cci.CountryCode)
 			for pfl := cci.MaxLenPrefix; pfl >= cci.LenCountryCode; pfl-- {
 				if pfl > len(e164) {
 					pfl = len(e164)
@@ -204,7 +254,7 @@ func FindNumberDataForE164(e164 string) *PhoneNumberItem {
 			}
 		}
 	}
-	
+
 	// this will return a nil
 	return nil
 }

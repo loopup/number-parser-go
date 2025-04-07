@@ -3,6 +3,7 @@ package numberparser
 import (
 	_ "embed"
 	"fmt"
+	"log"
 	"slices"
 
 	"strings"
@@ -187,6 +188,16 @@ func TestFindNumberDataForE164(t *testing.T) {
 		{"+52 55 1234 5678", "MX"},
 		{"+52 81 9876 5432", "MX"},
 		{"+52 33 1122 3344", "MX"},
+		{"+447762000000", "GB"},
+		{"+54923623360", "AR"},
+		{"+14159991111", "US"},
+		{"+44311111100", "GB"},
+		{"+33750730000", "FR"},
+		{"+24100000000", "GA"},
+		{"+69100000000", "FM"},
+		{"+77280000000", "KZ"},
+		{"+85270900000", "HK"},
+		{"+99554400000", "GE"},
 		{"+14156292008", "US"}}
 
 	for _, tc := range testcases {
@@ -194,7 +205,7 @@ func TestFindNumberDataForE164(t *testing.T) {
 		t.Run(testname, func(t *testing.T) {
 			res := FindNumberDataForE164(tc.input)
 			if res != nil && res.RegionCode != tc.want {
-				t.Errorf("FindNumberDataForE164: %s in: %v   want: %v", tc.input, res.IsSatellite, tc.want)
+				t.Errorf("FindNumberDataForE164: %s in: %v   want: %v", tc.input, res.RegionCode, tc.want)
 			}
 		})
 	}
@@ -216,6 +227,17 @@ func FuzzFindNumberDataForE164(f *testing.F) {
 		"+52 55 1234 5678",
 		"+52 81 9876 5432",
 		"+52 33 1122 3344",
+		"+447762000000",
+		"+54923623360",
+		"+14159991111",
+		"+44311111100",
+		"+33750730000",
+		"+24100000000",
+		"+69100000000",
+		"+77280000000",
+		"+85270900000",
+		"+99554400000",
+		"+14156292008",
 	}
 
 	for _, tc := range testcases {
@@ -307,6 +329,16 @@ func BenchmarkSanitizeNumber(b *testing.B) {
 		{"+52 222 1234 5678", "MX"},
 		{"+52 664 1234 5678", "MX"},
 		{"+52 81 9876 5432", "MX"},
+		{"+447762000000", "GB"},
+		{"+54923623360", "AR"},
+		{"+14159991111", "US"},
+		{"+44311111100", "GB"},
+		{"+33750730000", "FR"},
+		{"+24100000000", "GA"},
+		{"+69100000000", "FM"},
+		{"+77280000000", "KZ"},
+		{"+85270900000", "HK"},
+		{"+99554400000", "GE"},
 		{"+14156292008", "US"},
 	}
 
@@ -338,6 +370,16 @@ func BenchmarkFindNumberDataForE164(b *testing.B) {
 		{"+52 222 1234 5678", "MX"},
 		{"+52 664 1234 5678", "MX"},
 		{"+52 81 9876 5432", "MX"},
+		{"+447762000000", "GB"},
+		{"+54923623360", "AR"},
+		{"+14159991111", "US"},
+		{"+44311111100", "GB"},
+		{"+33750730000", "FR"},
+		{"+24100000000", "GA"},
+		{"+69100000000", "FM"},
+		{"+77280000000", "KZ"},
+		{"+85270900000", "HK"},
+		{"+99554400000", "GE"},
 		{"+14156292008", "US"}}
 
 	for i := 0; i < b.N; i++ {
@@ -409,6 +451,36 @@ func BenchmarkFindNumberDataForE164_MX(b *testing.B) {
 			if res != nil && res.RegionCode != tc.want {
 				b.Errorf("FindNumberDataForE164: %s in: %v   want: %v", tc.input, res.RegionCode, tc.want)
 			}
+		}
+	}
+}
+
+func TestZoneMatch(t *testing.T) {
+	tests := []struct {
+		phone    string
+		zoneId   int
+		zoneName string
+	}{
+		{"+447762000000", 4, "Europe"},
+		{"+54923623360", 5, "Central and South America"},
+		{"+14159991111", 1, "North American Numbering Plan"},
+		{"+44311111100", 4, "Europe"},
+		{"+33750730000", 3, "Europe"},
+		{"+24100000000", 2, "Africa"},
+		{"+69100000000", 6, "Southeast Asia and Oceania"},
+		{"+77280000000", 7, "Russia and Kazakhstan"},
+		{"+85270900000", 8, "East and South Asia"},
+		{"+99554400000", 9, "Middle East, Asia, Eastern Europe"},
+	}
+
+	for i, tt := range tests {
+		got := FindNumberDataForE164(tt.phone)
+		log.Printf("test %d :%v ... got:%v", i, tt, got)
+		if tt.zoneId != got.ZoneId {
+			t.Errorf("Failed ZoneId match; tt:%v --> got:%v", tt, got)
+		}
+		if tt.zoneName != got.ZoneName {
+			t.Errorf("Failed ZoneName match; tt:%v --> got:%v", tt, got)
 		}
 	}
 }
