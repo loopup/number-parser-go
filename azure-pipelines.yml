@@ -25,7 +25,7 @@ steps:
 
 - task: GoTool@0
   inputs:
-    version: '1.23.3'
+    version: '1.24.0'
 - task: Go@0
   displayName: 'Resolve dependencies'
   inputs:
