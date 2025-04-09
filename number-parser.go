@@ -7,16 +7,15 @@ import (
 	"github.com/gocarina/gocsv"
 )
 
-// Load the CSV and embed it into the binary so we do not have to worry about copying the
-// csv file at package/distribution time.
-// The embed directive loads the file into the binary and the next line makes it available
-// into the variable `PhoneNumberDataCsv`
-//
+//	Load the CSV and embed it into the binary so we do not have to worry about copying the
+//	csv file at package/distribution time.
+
 //go:embed number-prefix-data.csv
 var PhoneNumberDataCsv string
 
 var (
-	PhoneNumberCodex map[int]*CodexCountryItem = nil // country :-> array PhoneNumberItem
+	// Global instance 
+	PhoneNumberCodex map[int]*CodexCountryItem = nil
 )
 
 // We use the CodexCountryItem structure as a means to shard the PhoneNumberItem objects.
