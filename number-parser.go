@@ -20,10 +20,9 @@ var (
 	PhoneNumberCodex map[int]*CodexCountryItem = nil // country :-> array PhoneNumberItem
 )
 
+// We use the CodexCountryItem structure as a means to shard the PhoneNumberItem objects.
 type CodexCountryItem struct {
 	ZoneId         int
-	ZoneName       string
-	ZoneGroup      string
 	CountryCode    int
 	LenCountryCode int
 	MaxLenPrefix   int
@@ -32,9 +31,7 @@ type CodexCountryItem struct {
 
 // Represents each entry in the prefix_data.csv file
 type PhoneNumberItem struct {
-	ZoneId          int `csv:"zone_id"`
-	ZoneName        string
-	ZoneGroup       string
+	ZoneId          int    `csv:"zone_id"`
 	CountryCode     int    `csv:"country_code"`
 	RegionCode      string `csv:"region_code"`
 	NumberPrefix    string `csv:"number_prefix"`
@@ -43,6 +40,30 @@ type PhoneNumberItem struct {
 	IsSatellite     bool   `csv:"is_satellite"`
 	LenCountryCode  int    `csv:"cc_len"`
 	LenNumberPrefix int    `csv:"prefix_len"`
+}
+
+// Helper function for PhoneNumberItem to get the Zone name based on the ZoneId member of the host instance.
+func (pni PhoneNumberItem) getZoneName() string {
+	// Mapping uses the following source: https://en.wikipedia.org/wiki/List_of_telephone_country_codes#World_numbering_zones.
+	var zoneNameTable = []string{
+		"Unknown",
+		"North American Numbering Plan",
+		"Africa",
+		"Europe", "Europe",
+		"Central and South America",
+		"Southeast Asia and Oceania",
+		"Russia and Kazakhstan",
+		"East and South Asia",
+		"Middle East, Asia, Eastern Europe"}
+
+	return zoneNameTable[pni.ZoneId]
+}
+
+func (pni PhoneNumberItem) getZoneGroup() string {
+	// Colloquial grouping of the Zones for telecom use.
+	var zoneGroupTable = []string{"Unknown", "Americas", "MEA", "Europe", "Europe", "Americas", "APAC", "Russia", "APAC", "MEA"}
+
+	return zoneGroupTable[pni.ZoneId]
 }
 
 // Loads the file prefix_data.csv into memory to allow number parsing via FindNumberDataForE164
@@ -55,51 +76,16 @@ func init() {
 
 	gocsv.UnmarshalStringToCallback(PhoneNumberDataCsv, func(item PhoneNumberItem) {
 		counterLines++
-		// Mapping uses the following source: https://en.wikipedia.org/wiki/List_of_telephone_country_codes#World_numbering_zones.
-		switch item.ZoneId {
-		case 1:
-			item.ZoneName = "North American Numbering Plan"
-			item.ZoneGroup = "Americas"
-		case 2:
-			item.ZoneName = "Africa"
-			item.ZoneGroup = "MEA"
-		case 3, 4:
-			item.ZoneName = "Europe"
-			item.ZoneGroup = "Europe"
-		case 5:
-			item.ZoneName = "Central and South America"
-			item.ZoneGroup = "Americas"
-		case 6:
-			item.ZoneName = "Southeast Asia and Oceania"
-			item.ZoneGroup = "APAC"
-		case 7:
-			item.ZoneName = "Russia and Kazakhstan"
-		case 8:
-			item.ZoneName = "East and South Asia"
-			item.ZoneGroup = "APAC"
-		case 9:
-			item.ZoneName = "Middle East, Asia, Eastern Europe"
-			item.ZoneGroup = "MEA"
-		default:
-			item.ZoneName = "Unknown"
-		}
-		/*
-			if item.ZoneId == 8 {
-				log.Printf("ZoneId: %v CountryCode: %v Prefix:%v <-- %v", item.ZoneId, item.CountryCode, item.NumberPrefix, item)
-			}
-		*/
+
 		// Initialize the map on-demand..
 		cci := PhoneNumberCodex[item.CountryCode]
 		if cci == nil {
 			// Set the CodexCountryItem properties
-			cci = &CodexCountryItem{ZoneId: item.ZoneId, ZoneName: item.ZoneName, ZoneGroup: item.ZoneGroup, CountryCode: item.CountryCode, LenCountryCode: item.LenCountryCode, PrefixMap: make(map[string]*PhoneNumberItem)}
+			cci = &CodexCountryItem{ZoneId: item.ZoneId, CountryCode: item.CountryCode, LenCountryCode: item.LenCountryCode, PrefixMap: make(map[string]*PhoneNumberItem)}
 			counterCountries++
 
 			// Store the item
 			PhoneNumberCodex[item.CountryCode] = cci
-			//if item.CountryCode == 852 {
-			//	log.Printf("Stored ZoneId: %v CountryCode: %v Prefix:%v <-- %v  in map %v", item.ZoneId, item.CountryCode, item.NumberPrefix, cci, PhoneNumberCodex[item.CountryCode])
-			//}
 		}
 
 		if cci != nil {
@@ -109,9 +95,6 @@ func init() {
 			}
 			// Store the item
 			cci.PrefixMap[item.NumberPrefix] = &item
-			//if item.CountryCode == 852 {
-			//	log.Printf("Stored item ZoneId: %v CountryCode: %v Prefix:%v <-- %v  in prefix map %v", item.ZoneId, item.CountryCode, item.NumberPrefix, cci, PhoneNumberCodex[item.CountryCode].PrefixMap[item.NumberPrefix])
-			//}
 		}
 	})
 	//log.Printf("Finished Unpacking CSV into codex size:%v ttx:%v", len(PhoneNumberCodex), time.Since(ttx))
