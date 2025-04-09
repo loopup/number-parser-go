@@ -2,7 +2,6 @@ package numberparser
 
 import (
 	_ "embed"
-	"log"
 	"strings"
 
 	"github.com/gocarina/gocsv"
@@ -42,26 +41,22 @@ type PhoneNumberItem struct {
 	LenNumberPrefix int    `csv:"prefix_len"`
 }
 
-// Helper function for PhoneNumberItem to get the Zone name based on the ZoneId member of the host instance.
+// Helper function for PhoneNumberItem to get the Zone name based on the ZoneId member of the instance.
 func (pni PhoneNumberItem) getZoneName() string {
 	// Mapping uses the following source: https://en.wikipedia.org/wiki/List_of_telephone_country_codes#World_numbering_zones.
-	var zoneNameTable = []string{
-		"Unknown",
-		"North American Numbering Plan",
-		"Africa",
-		"Europe", "Europe",
-		"Central and South America",
-		"Southeast Asia and Oceania",
-		"Russia and Kazakhstan",
-		"East and South Asia",
-		"Middle East, Asia, Eastern Europe"}
+	var zoneNameTable = [...]string{
+		// 0        1                                2         3         4         5                            6                             7                        8                      9
+		"Unknown", "North American Numbering Plan", "Africa", "Europe", "Europe", "Central and South America", "Southeast Asia and Oceania", "Russia and Kazakhstan", "East and South Asia", "Middle East, Asia, Eastern Europe"}
 
 	return zoneNameTable[pni.ZoneId]
 }
 
+// Helper function for the PhoneNumberItem to get the Zone group based on the ZoneId member of the instance.
 func (pni PhoneNumberItem) getZoneGroup() string {
 	// Colloquial grouping of the Zones for telecom use.
-	var zoneGroupTable = []string{"Unknown", "Americas", "MEA", "Europe", "Europe", "Americas", "APAC", "Russia", "APAC", "MEA"}
+	var zoneGroupTable = [...]string{
+		// 0        1           2      3         4         5           6       7         8       9
+		"Unknown", "Americas", "MEA", "Europe", "Europe", "Americas", "APAC", "Russia", "APAC", "MEA"}
 
 	return zoneGroupTable[pni.ZoneId]
 }
@@ -195,37 +190,29 @@ func getPossibleCountryCodes(str string) (int, int, int) {
 func FindCodexCountryItem(e164 string) *CodexCountryItem {
 	cc1d, cc2d, cc3d := getPossibleCountryCodes(e164)
 
-	//log.Printf("Trying to find CodexCountryItem for e164:%v   cc[%v,%v,%v] ", e164, cc1d, cc2d, cc3d)
-
-	// First search for 3-digit country first
-	// next search for 2-digit country
-	// last search for 1-digit county codes
 	if cci := PhoneNumberCodex[cc3d]; cci != nil {
-		//log.Printf("Using CodexCountryItem for e164:%v   cc3[%v]: %v ", e164, cc3d, cci)
+		// First search for 3-digit country first
 		return cci
 	} else if cci := PhoneNumberCodex[cc2d]; cci != nil {
-		//log.Printf("Using CodexCountryItem for e164:%v   cc1[%v]: %v ", e164, cc1d, cci)
+		// next search for 2-digit country
 		return cci
 	} else if cci := PhoneNumberCodex[cc1d]; cci != nil {
-		//log.Printf("Using CodexCountryItem for e164:%v   cc2[%v]: %v ", e164, cc2d, cci)
+		// last search for 1-digit county codes
 		return cci
 	}
 
-	log.Printf("Unable to find CodexCountryItem for e164:%v", e164)
 	return nil
 }
 
 // Given a e164 argument, check if we have a match against our PhoneNumberData and return the PhoneNumberItem record.
 // This function will normalize the argument to remove preceeding `+` or `0`
 // This is the improved search version using buckets to speed up lookup of number information.
-// The previous version
 func FindNumberDataForE164(e164 string) *PhoneNumberItem {
 	var pni *PhoneNumberItem = nil
 
 	if e164 = SanitizeNumber(e164); len(e164) > 1 {
 		if cci := FindCodexCountryItem(e164); cci != nil {
 			// Build the list of the prefixes that we should search with decreasing lengths
-			//log.Printf("FindNumberDataForE164 - Scanning for %v in cci:%v ...", e164, cci.CountryCode)
 			for pfl := cci.MaxLenPrefix; pfl >= cci.LenCountryCode; pfl-- {
 				if pfl > len(e164) {
 					pfl = len(e164)
