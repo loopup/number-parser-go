@@ -14,7 +14,7 @@ import (
 var PhoneNumberDataCsv string
 
 var (
-	// Global instance 
+	// Global instance
 	PhoneNumberCodex map[int]*CodexCountryItem = nil
 )
 
@@ -185,7 +185,7 @@ func getPossibleCountryCodes(str string) (int, int, int) {
 }
 
 // Returns the country code information matching the country code by scanning the first 1-3 digits of the argument
-// It is required that you pass in result of
+// It is required that you pass in result of SanitizeNumber
 func FindCodexCountryItem(e164 string) *CodexCountryItem {
 	cc1d, cc2d, cc3d := getPossibleCountryCodes(e164)
 
@@ -206,20 +206,19 @@ func FindCodexCountryItem(e164 string) *CodexCountryItem {
 // Given a e164 argument, check if we have a match against our PhoneNumberData and return the PhoneNumberItem record.
 // This function will normalize the argument to remove preceeding `+` or `0`
 // This is the improved search version using buckets to speed up lookup of number information.
+// The caller must ensure that the number is "sanitized" or invoke SanitizeNumber
 func FindNumberDataForE164(e164 string) *PhoneNumberItem {
 	var pni *PhoneNumberItem = nil
 
-	if e164 = SanitizeNumber(e164); len(e164) > 1 {
-		if cci := FindCodexCountryItem(e164); cci != nil {
-			// Build the list of the prefixes that we should search with decreasing lengths
-			for pfl := cci.MaxLenPrefix; pfl >= cci.LenCountryCode; pfl-- {
-				if pfl > len(e164) {
-					pfl = len(e164)
-				}
-				// Search for the given prefix
-				if pni = cci.PrefixMap[e164[:pfl]]; pni != nil {
-					return pni
-				}
+	if cci := FindCodexCountryItem(e164); cci != nil {
+		// Build the list of the prefixes that we should search with decreasing lengths
+		for pfl := cci.MaxLenPrefix; pfl >= cci.LenCountryCode; pfl-- {
+			if pfl > len(e164) {
+				pfl = len(e164)
+			}
+			// Search for the given prefix
+			if pni = cci.PrefixMap[e164[:pfl]]; pni != nil {
+				return pni
 			}
 		}
 	}

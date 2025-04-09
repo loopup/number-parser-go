@@ -34,7 +34,7 @@ func TestPhoneNumberData_Satellite(t *testing.T) {
 	}
 
 	for _, tc := range testcases {
-		res := FindNumberDataForE164(tc.input)
+		res := FindNumberDataForE164(SanitizeNumber(tc.input))
 		if res == nil || res.IsSatellite != tc.want {
 			t.Errorf("FindNumberDataForE164: in:%s  want: %v", tc.input, tc.want)
 		}
@@ -57,7 +57,7 @@ func TestPhoneNumberData_Mobile(t *testing.T) {
 	}
 
 	for _, tc := range testcases {
-		res := FindNumberDataForE164(tc.input)
+		res := FindNumberDataForE164(SanitizeNumber(tc.input))
 		if res == nil || (res.IsMobile != tc.want) {
 			t.Errorf("FindNumberDataForE164: %s in: %v   want: %v", tc.input, res.IsMobile, tc.want)
 		}
@@ -73,7 +73,7 @@ func TestPhoneNumberData_Mobile_UK(t *testing.T) {
 	}
 
 	for _, tc := range testcases {
-		res := FindNumberDataForE164(tc.input)
+		res := FindNumberDataForE164(SanitizeNumber(tc.input))
 		if res == nil || (res.IsMobile != tc.want) {
 			t.Errorf("FindNumberDataForE164: %s in: %v   want: %v", tc.input, res.IsMobile, tc.want)
 		}
@@ -90,7 +90,7 @@ func TestPhoneNumberData_Mobile_MX(t *testing.T) {
 	}
 
 	for _, tc := range testcases {
-		res := FindNumberDataForE164(tc.input)
+		res := FindNumberDataForE164(SanitizeNumber(tc.input))
 		if res == nil || (res.IsMobile != tc.want) {
 			t.Errorf("FindNumberDataForE164: %s in: %v   want: %v", tc.input, res, tc.want)
 		}
@@ -114,7 +114,7 @@ func TestPhoneNumberData_Geographic(t *testing.T) {
 	}
 
 	for _, tc := range testcases {
-		res := FindNumberDataForE164(tc.input)
+		res := FindNumberDataForE164(SanitizeNumber(tc.input))
 		if res == nil || res.IsGeographic != tc.want {
 			t.Errorf("FindNumberDataForE164: %s in: %v   want: %v", tc.input, res.IsGeographic, tc.want)
 		}
@@ -203,7 +203,7 @@ func TestFindNumberDataForE164(t *testing.T) {
 	for _, tc := range testcases {
 		testname := fmt.Sprintf("%s-%s", tc.input, tc.want)
 		t.Run(testname, func(t *testing.T) {
-			res := FindNumberDataForE164(tc.input)
+			res := FindNumberDataForE164(SanitizeNumber(tc.input))
 			if res != nil && res.RegionCode != tc.want {
 				t.Errorf("FindNumberDataForE164: %s in: %v   want: %v", tc.input, res.RegionCode, tc.want)
 			}
@@ -357,30 +357,30 @@ func BenchmarkFindNumberDataForE164(b *testing.B) {
 		input string
 		want  string
 	}{
-		{"+12125554448", "US"},
-		{"+447762987654", "GB"},
-		{"+14158746923", "US"},
-		{"+12125552270", "US"},
-		{"+16508982178", "US"},
-		{"+1510866949", "US"},
-		{"+19253004504", "US"},
-		{"+14085552270", "US"},
-		{"+52 55 1234 5678", "MX"},
-		{" +52 33 1234 5678 ", "MX"},
-		{"+52 222 1234 5678", "MX"},
-		{"+52 664 1234 5678", "MX"},
-		{"+52 81 9876 5432", "MX"},
-		{"+447762000000", "GB"},
-		{"+54923623360", "AR"},
-		{"+14159991111", "US"},
-		{"+44311111100", "GB"},
-		{"+33750730000", "FR"},
-		{"+24100000000", "GA"},
-		{"+69100000000", "FM"},
-		{"+77280000000", "KZ"},
-		{"+85270900000", "HK"},
-		{"+99554400000", "GE"},
-		{"+14156292008", "US"}}
+		{"12125554448", "US"},
+		{"447762987654", "GB"},
+		{"14158746923", "US"},
+		{"12125552270", "US"},
+		{"16508982178", "US"},
+		{"1510866949", "US"},
+		{"19253004504", "US"},
+		{"14085552270", "US"},
+		{"525512345678", "MX"},
+		{"523312345678 ", "MX"},
+		{"5222212345678", "MX"},
+		{"5266412345678", "MX"},
+		{"528198765432", "MX"},
+		{"447762000000", "GB"},
+		{"54923623360", "AR"},
+		{"14159991111", "US"},
+		{"44311111100", "GB"},
+		{"33750730000", "FR"},
+		{"24100000000", "GA"},
+		{"69100000000", "FM"},
+		{"77280000000", "KZ"},
+		{"85270900000", "HK"},
+		{"99554400000", "GE"},
+		{"14156292008", "US"}}
 
 	for i := 0; i < b.N; i++ {
 		for _, tc := range testcases {
@@ -439,11 +439,11 @@ func BenchmarkFindNumberDataForE164_MX(b *testing.B) {
 		input string
 		want  string
 	}{
-		{"+52 55 1234 5678", "MX"},
-		{" +52 33 1234 5678 ", "MX"},
-		{"+52 222 1234 5678", "MX"},
-		{"+52 664 1234 5678", "MX"},
-		{"+52 81 9876 5432", "MX"}}
+		{"+525512345678", "MX"},
+		{"+523312345678 ", "MX"},
+		{"+5222212345678", "MX"},
+		{"+5266412345678", "MX"},
+		{"+528198765432", "MX"}}
 
 	for i := 0; i < b.N; i++ {
 		for _, tc := range testcases {
@@ -462,16 +462,16 @@ func TestZoneMatch(t *testing.T) {
 		zoneName  string
 		zoneGroup string
 	}{
-		{"+447762000000", 4, "Europe", "Europe"},
-		{"+54923623360", 5, "Central and South America", "Americas"},
-		{"+14159991111", 1, "North American Numbering Plan", "Americas"},
-		{"+44311111100", 4, "Europe", "Europe"},
-		{"+33750730000", 3, "Europe", "Europe"},
-		{"+24100000000", 2, "Africa", "MEA"},
-		{"+69100000000", 6, "Southeast Asia and Oceania", "APAC"},
-		{"+77280000000", 7, "Russia and Kazakhstan", "Russia"},
-		{"+85270900000", 8, "East and South Asia", "APAC"},
-		{"+99554400000", 9, "Middle East, Asia, Eastern Europe", "MEA"},
+		{"447762000000", 4, "Europe", "Europe"},
+		{"54923623360", 5, "Central and South America", "Americas"},
+		{"14159991111", 1, "North American Numbering Plan", "Americas"},
+		{"44311111100", 4, "Europe", "Europe"},
+		{"33750730000", 3, "Europe", "Europe"},
+		{"24100000000", 2, "Africa", "MEA"},
+		{"69100000000", 6, "Southeast Asia and Oceania", "APAC"},
+		{"77280000000", 7, "Russia and Kazakhstan", "Russia"},
+		{"85270900000", 8, "East and South Asia", "APAC"},
+		{"99554400000", 9, "Middle East, Asia, Eastern Europe", "MEA"},
 	}
 
 	for i, tt := range tests {
@@ -495,10 +495,10 @@ func TestZoneGroupMatch(t *testing.T) {
 		phone1    string
 		phone2    string
 	}{
-		{"Europe", "+447762000000", "+337507300000"},
-		{"Americas", "+5492362336", "+14159991111"},
-		{"MEA", "+24100000000", "+99554400000"},
-		{"APAC", "+69100000000", "+85270900000"},
+		{"Europe", "447762000000", "337507300000"},
+		{"Americas", "5492362336", "14159991111"},
+		{"MEA", "24100000000", "99554400000"},
+		{"APAC", "69100000000", "85270900000"},
 	}
 
 	for i, tt := range tests {

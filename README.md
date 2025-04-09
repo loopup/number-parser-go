@@ -10,6 +10,15 @@
 go get -u github.com/loopup/number-parser-go@latest
 ```
 
+## Usage
+
+```go
+    // You must pass a number free of decorations to the FindNumberForE164()
+    r1 := FindNumberDataForE164(SanitizeNumber("+1 (415) 777-1234"))
+    // Equivalent to the..
+    r2 := FindNumberDataForE164("14157771234")
+```
+
 ## References
 - The [country code information](https://en.wikipedia.org/wiki/List_of_telephone_country_codes) is from Wikipedia.
 - Detailed number data is partially sourced from carriers.
