@@ -1,6 +1,6 @@
 module github.com/loopup/number-parser-go
 
-go 1.24.0
+go 1.24
 
 retract [v0.0.1, v0.5.2]
 
