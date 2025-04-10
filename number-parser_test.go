@@ -480,10 +480,10 @@ func TestZoneMatch(t *testing.T) {
 		if tt.zoneId != got.ZoneId {
 			t.Errorf("Failed ZoneId match; tt:%v --> got:%v", tt, got)
 		}
-		if tt.zoneName != got.getZoneName() {
+		if tt.zoneName != got.ZoneName() {
 			t.Errorf("Failed ZoneName match; tt:%v --> got:%v", tt, got)
 		}
-		if tt.zoneGroup != got.getZoneGroup() {
+		if tt.zoneGroup != got.ZoneGroup() {
 			t.Errorf("Failed ZoneName match; tt:%v --> got:%v", tt, got)
 		}
 	}
@@ -506,7 +506,7 @@ func TestZoneGroupMatch(t *testing.T) {
 		p2 := FindNumberDataForE164(tt.phone2)
 
 		log.Printf("test %d :%v ... got:%v:%v", i, tt, p1, p2)
-		if !(p1.getZoneGroup() == p2.getZoneGroup() && p1.getZoneGroup() == tt.zoneGroup) {
+		if !(p1.ZoneGroup() == p2.ZoneGroup() && p1.ZoneGroup() == tt.zoneGroup) {
 			t.Errorf("Failed ZoneId match; tt:%v --> got:%v", tt, p1)
 		}
 	}

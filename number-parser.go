@@ -41,7 +41,7 @@ type PhoneNumberItem struct {
 }
 
 // Helper function for PhoneNumberItem to get the Zone name based on the ZoneId member of the instance.
-func (pni PhoneNumberItem) getZoneName() string {
+func (pni PhoneNumberItem) ZoneName() string {
 	// Mapping uses the following source: https://en.wikipedia.org/wiki/List_of_telephone_country_codes#World_numbering_zones.
 	var zoneNameTable = [...]string{
 		// 0        1                                2         3         4         5                            6                             7                        8                      9
@@ -51,7 +51,7 @@ func (pni PhoneNumberItem) getZoneName() string {
 }
 
 // Helper function for the PhoneNumberItem to get the Zone group based on the ZoneId member of the instance.
-func (pni PhoneNumberItem) getZoneGroup() string {
+func (pni PhoneNumberItem) ZoneGroup() string {
 	// Colloquial grouping of the Zones for telecom use.
 	var zoneGroupTable = [...]string{
 		// 0        1           2      3         4         5           6       7         8       9
